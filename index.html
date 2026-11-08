@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banafsaj | بنفسج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="logo">بنفسج</a>
+    <nav class="links" id="links">
+      <a href="#top" data-i18n="home"></a><a href="#products" data-i18n="products"></a><a href="#checkout" data-i18n="checkout"></a><a href="#contact" data-i18n="contact"></a>
+    </nav>
+    <button class="lang" id="langBtn" aria-label="Language">EN</button>
+    <button class="cart-btn" id="openCart" aria-label="Cart">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+      <span class="count" id="count">0</span>
+    </button>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap hero-in">
+    <div>
+      <p class="badge" id="hBadge" data-i18n="heroBadge"></p>
+      <h1 id="hTitle" data-i18n="heroTitle"></h1>
+      <p class="lead" data-i18n="heroLead"></p>
+      <a href="#products" class="btn" data-i18n="shop"></a>
+    </div>
+    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'">
+  </div>
+</section>
+
+<section class="wrap feats">
+  <div data-i18n="f1"></div><div data-i18n="f3"></div><div data-i18n="f4"></div>
+</section>
+
+<section class="wrap" id="products">
+  <h2 data-i18n="products"></h2>
+  <input id="q" type="search" class="search">
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+  <div class="more"><button class="btn ghost" id="more" data-i18n="more" hidden></button></div>
+</section>
+
+<section class="wrap" id="checkout">
+  <h2 data-i18n="checkout"></h2>
+  <div class="co">
+    <form id="form" novalidate>
+      <label><span data-i18n="name"></span><input name="name" required autocomplete="name"></label>
+      <label><span data-i18n="phone"></span><input name="phone" type="tel" required inputmode="tel" autocomplete="tel" dir="ltr"></label>
+      <label><span data-i18n="city"></span><input name="city" required></label>
+      <label><span data-i18n="address"></span><textarea name="address" rows="3" required></textarea></label>
+      <fieldset>
+        <legend data-i18n="payment"></legend>
+        <label class="radio"><input type="radio" name="pay" value="cod" checked> <span data-i18n="cod"></span></label>
+        <label class="radio"><input type="radio" name="pay" value="card"> <span data-i18n="card"></span></label>
+        <label class="radio"><input type="radio" name="pay" value="whish"> <span data-i18n="whish"></span></label>
+        <div id="whishBox" hidden>
+          <p class="whish" id="whishInfo"></p>
+          <label><span data-i18n="whishRef"></span><input name="ref" dir="ltr"></label>
+        </div>
+        <div id="cardBox" hidden>
+          <label><span data-i18n="cardNo"></span><input name="card" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" dir="ltr"></label>
+          <label><span data-i18n="exp"></span><input name="exp" inputmode="numeric" placeholder="MM/YY" maxlength="5" dir="ltr"></label>
+        </div>
+      </fieldset>
+      <p class="err" id="err" role="alert"></p>
+      <div class="btns">
+        <button class="btn" type="submit" data-i18n="placeOrder"></button>
+        <button class="btn wa" type="button" id="waBtn" data-i18n="waOrder"></button>
+      </div>
+    </form>
+    <aside class="summary">
+      <h3 data-i18n="summary"></h3>
+      <div id="sumList"></div>
+      <div class="row"><span data-i18n="subtotal"></span><b id="sSub"></b></div>
+      <div class="row"><span data-i18n="shipping"></span><b id="sShip"></b></div>
+      <div class="row tot"><span data-i18n="total"></span><b id="sTot"></b></div>
+    </aside>
+  </div>
+</section>
+
+<footer class="foot" id="contact">
+  <div class="wrap">
+    <b>بنفسج · Banafsaj</b>
+    <p><a id="fMail"></a> · <a id="fTel" dir="ltr"></a></p>
+    <p><span data-i18n="rights"></span> · <button class="link" id="adminBtn" data-i18n="admin"></button></p>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="d-head"><h3 data-i18n="cartTitle"></h3><button id="closeCart" aria-label="Close">✕</button></div>
+  <div class="d-body" id="cartItems"></div>
+  <div class="d-foot">
+    <div class="row"><span data-i18n="subtotal"></span><b id="dSub"></b></div>
+    <div class="row"><span data-i18n="shipping"></span><b id="dShip"></b></div>
+    <div class="row tot"><span data-i18n="total"></span><b id="dTot"></b></div>
+    <a href="#checkout" class="btn full" id="toCheckout" data-i18n="checkoutBtn"></a>
+  </div>
+</aside>
+
+<div class="modal" id="modal" hidden>
+  <div class="box">
+    <div class="ok">✓</div>
+    <h3 data-i18n="okTitle"></h3>
+    <p><span data-i18n="orderNo"></span> <b id="orderNo"></b></p>
+    <p data-i18n="okText"></p>
+    <button class="btn" id="closeModal" data-i18n="continue"></button>
+  </div>
+</div>
+
+<div class="modal" id="admin" hidden>
+  <div class="panel">
+    <div class="d-head"><h3 data-i18n="adminTitle"></h3><button id="closeAdmin" aria-label="Close">✕</button></div>
+    <div class="tools">
+      <label class="btn sm">📷 <span data-i18n="bulk"></span><input type="file" id="bulk" accept="image/*" multiple hidden></label>
+      <button class="btn sm" id="export" data-i18n="export"></button>
+      <label class="btn sm">⬆ <span data-i18n="import"></span><input type="file" id="import" accept=".json" hidden></label>
+      <button class="btn sm ghost" id="reset" data-i18n="reset"></button>
+    </div>
+    <p class="hint" data-i18n="adminHint"></p>
+    <form id="sForm" class="s-form">
+      <h4 data-i18n="contactSet"></h4>
+      <label><span data-i18n="email"></span><input name="email" type="email" dir="ltr"></label>
+      <label><span data-i18n="phoneLbl"></span><input name="phone" dir="ltr"></label>
+      <label><span data-i18n="waNum"></span><input name="wa" dir="ltr"></label>
+      <label><span data-i18n="whishNum"></span><input name="whish" dir="ltr"></label>
+      <label class="chk dchk"><input type="checkbox" name="discOn"> <span data-i18n="discOnLbl"></span></label>
+      <label><span data-i18n="discPct"></span><input name="pct" type="number" min="0" max="99" dir="ltr"></label>
+      <button class="btn sm" type="submit" data-i18n="save"></button>
+    </form>
+    <form id="cForm" class="c-form">
+      <h4 data-i18n="catTitle"></h4>
+      <p class="hint" data-i18n="catHint"></p>
+      <div id="cRows"></div>
+      <button class="btn sm" type="submit" data-i18n="save"></button>
+    </form>
+    <div class="a-grid">
+      <div>
+        <div class="a-filter">
+          <input id="aq" type="search">
+          <select id="aStat"><option value="all" data-i18n="all"></option><option value="vis" data-i18n="visOpt"></option><option value="hid" data-i18n="hidOpt"></option></select>
+          <button class="btn sm ghost" type="button" id="hideAll" data-i18n="hideRes"></button>
+          <button class="btn sm ghost" type="button" id="showAll" data-i18n="showRes"></button>
+        </div>
+        <div id="aList"></div>
+      </div>
+      <form id="pForm">
+        <h4 id="fTitle"></h4>
+        <div class="preview" id="preview"></div>
+        <label><span data-i18n="image"></span><input type="file" id="pFile" accept="image/*"></label>
+        <label><span data-i18n="imageUrl"></span><input name="img" dir="ltr" placeholder="https://..."></label>
+        <label><span>الاسم (عربي)</span><input name="name_ar"></label>
+        <label><span>Name (English)</span><input name="name_en" dir="ltr"></label>
+        <label><span>الوصف (عربي)</span><textarea name="desc_ar" rows="2"></textarea></label>
+        <label><span>Description (English)</span><textarea name="desc_en" rows="2" dir="ltr"></textarea></label>
+        <label><span>القسم (عربي)</span><input name="cat_ar"></label>
+        <label><span>Category (English)</span><input name="cat_en" dir="ltr"></label>
+        <label><span data-i18n="price"></span><input name="price" type="number" min="0" step="0.01" dir="ltr"></label>
+        <label><span data-i18n="oldPrice"></span><input name="old" type="number" min="0" step="0.01" dir="ltr"></label>
+        <label class="chk"><input type="checkbox" name="hidden"> <span data-i18n="hideLbl"></span></label>
+        <div class="btns"><button class="btn" type="submit" data-i18n="save"></button><button class="btn ghost" type="button" id="cancelEdit" data-i18n="newProduct"></button></div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
