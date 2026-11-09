@@ -1,5 +1,5 @@
 const CFG={PASS:"admin123",SHIP:5,FREE:100}; // كلمة مرور الإدارة
-const S={email:"info@banafsaj.example",phone:"+961 00 000 000",wa:"96100000000",whish:"+961 00 000 000",discOn:true,pct:40}; // قابلة للتعديل من لوحة الإدارة
+const S={email:"combanafsaj@gmail.com",phone:"+961 70900422",wa:"96170900422",whish:"+961 70900422",discOn:true,pct:40}; // قابلة للتعديل من لوحة الإدارة
 const U=id=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`;
 const EMO={Electronics:"📱",Fashion:"👕",Accessories:"👜",Perfumes:"🧴"};
 const COL=[["أسود","Black"],["أبيض","White"],["فضي","Silver"],["أزرق","Blue"],["أحمر","Red"],["ذهبي","Gold"],["رمادي","Gray"],["أخضر","Green"],["بنفسجي","Purple"],["وردي","Pink"]];
