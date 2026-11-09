@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">متجر بنفسج المميز - Banafsajcom</title>
+  <title>متجر بنفسج المميز - Banafsajcom</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -88,22 +88,22 @@
   </div>
 
   <section id="fashion">
-    <h2><span id="title-fashion">أزياء وملابس</span> <span style="font-size: 15px; color: #666;" id="count-fashion">(100 صنف منسق)</span></h2>
+    <h2><span id="title-fashion">أزياء وملابس</span> <span style="font-size: 15px; color: #666;" id="count-fashion">(كتالوج منسق)</span></h2>
     <div class="grid" id="fashion-grid"></div>
   </section>
 
   <section id="electronics">
-    <h2><span id="title-elec">إلكترونيات ومنوعات</span> <span style="font-size: 15px; color: #666;" id="count-elec">(100 صنف منسق)</span></h2>
+    <h2><span id="title-elec">إلكترونيات ومنوعات</span> <span style="font-size: 15px; color: #666;" id="count-elec">(كتالوج منسق)</span></h2>
     <div class="grid" id="electronics-grid"></div>
   </section>
 
   <section id="perfumes">
-    <h2><span id="title-perf">العطور والتجميل</span> <span style="font-size: 15px; color: #666;" id="count-perf">(100 صنف منسق)</span></h2>
+    <h2><span id="title-perf">العطور والتجميل</span> <span style="font-size: 15px; color: #666;" id="count-perf">(كتالوج منسق)</span></h2>
     <div class="grid" id="perfumes-grid"></div>
   </section>
 
   <section id="accessories">
-    <h2><span id="title-acc">الإكسسوارات والمجوهرات</span> <span style="font-size: 15px; color: #666;" id="count-acc">(100 صنف منسق)</span></h2>
+    <h2><span id="title-acc">الإكسسوارات والمجوهرات</span> <span style="font-size: 15px; color: #666;" id="count-acc">(كتالوج منسق)</span></h2>
     <div class="grid" id="accessories-grid"></div>
   </section>
 </div>
@@ -116,96 +116,70 @@
   const affCode = "FgiHU90Jmtk_01_KOC-C";
   let currentLang = 'ar';
 
-  // بيانات دقيقة ومخصصة لكل قسم لمنع أي تكرار أو عدم تطابق
-  const categoriesData = {
-    fashion: {
-      titles: ["فستان نسائي كاجوال راقٍ", "قميص صيفي أنيق بتصميم عصري", "بنطال جينز قطني مريح", "سترة شتوية فاخرة", "طقم ملابس رياضية عصرية", "بلوزة نسائية ناعمة", "تنورة طويلة أنيقة"],
-      images: [
-        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80",
-        "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&q=80",
-        "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&q=80",
-        "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=400&q=80",
-        "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80",
-        "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400&q=80",
-        "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80"
-      ],
-      baseSku: 2000000
-    },
-    electronics: {
-      titles: ["سماعات أذن لاسلكية بتقنية البلوتوث", "ساعة ذكية رياضية لتتبع اللياقة", "إضاءة LED للمكاتب الذكية", "حامل هاتف متين للسيارة", "شاحن جداري سريع متعدد المنافذ", "مكبر صوت محمول مقاوم للماء", "كابل شحن متين فائق السرعة"],
-      images: [
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80",
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
-        "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80",
-        "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&q=80",
-        "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=400&q=80",
-        "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80",
-        "https://images.unsplash.com/photo-1585338107529-13afc5f02c86?w=400&q=80"
-      ],
-      baseSku: 3000000
-    },
-    perfumes: {
-      titles: ["عطر نسائي زهري فواح ومنعش", "زيت عطر مركز للسيارة والمنزل", "بخاخ معطر للجسم طويل الأمد", "مبخرة إلكترونية محمولة فاخرة", "عطر رجالي خشبي أنيق", "مجموعة عطور ميني فاخرة"],
-      images: [
-        "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&q=80",
-        "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&q=80",
-        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80",
-        "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&q=80",
-        "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?w=400&q=80",
-        "https://images.unsplash.com/photo-1615397349754-cfa2066a298e?w=400&q=80"
-      ],
-      baseSku: 4000000
-    },
-    accessories: {
-      titles: ["حقيبة يد نسائية كلاسيكية جلدية", "نظارة شمسية عصرية بإطار أنيق", "سوار يد معدني مطلي بالذهب", "قلادة نسائية بتصميم هندسي راقٍ", "محفظة بطاقات جلدية عملية", "قبعة صيفية أنيقة للحماية"],
-      images: [
-        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80",
-        "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&q=80",
-        "https://images.unsplash.com/photo-1611591475281-8d995e865487?w=400&q=80",
-        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&q=80",
-        "https://images.unsplash.com/photo-1509319117193-57bab727e09d?w=400&q=80",
-        "https://images.unsplash.com/photo-1521369909029-2afed882baee?w=400&q=80"
-      ],
-      baseSku: 5000000
-    }
+  const catalogData = {
+    fashion: [
+      {title: "فستان نسائي كاجوال راقٍ", price: "$25.00", img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80", sku: 2000001},
+      {title: "قميص صيفي أنيق بتصميم عصري", price: "$18.00", img: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&q=80", sku: 2000002},
+      {title: "بنطال جينز قطني مريح", price: "$32.00", img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&q=80", sku: 2000003},
+      {title: "سترة شتوية فاخرة", price: "$45.00", img: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=400&q=80", sku: 2000004},
+      {title: "طقم ملابس رياضية عصرية", price: "$38.00", img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80", sku: 2000005},
+      {title: "بلوزة نسائية ناعمة", price: "$20.00", img: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400&q=80", sku: 2000006}
+    ],
+    electronics: [
+      {title: "سماعات أذن لاسلكية بتقنية البلوتوث", price: "$29.00", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80", sku: 3000001},
+      {title: "ساعة ذكية رياضية لتتبع اللياقة", price: "$49.00", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80", sku: 3000002},
+      {title: "إضاءة LED للمكاتب الذكية", price: "$22.00", img: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80", sku: 3000003},
+      {title: "حامل هاتف متين للسيارة", price: "$15.00", img: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&q=80", sku: 3000004},
+      {title: "شاحن جداري سريع متعدد المنافذ", price: "$19.00", img: "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=400&q=80", sku: 3000005},
+      {title: "مكبر صوت محمول مقاوم للماء", price: "$35.00", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80", sku: 3000006}
+    ],
+    perfumes: [
+      {title: "عطر نسائي زهري فواح ومنعش", price: "$35.00", img: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&q=80", sku: 4000001},
+      {title: "زيت عطر مركز للسيارة والمنزل", price: "$14.00", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&q=80", sku: 4000002},
+      {title: "بخاخ معطر للجسم طويل الأمد", price: "$18.00", img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80", sku: 4000003},
+      {title: "مبخرة إلكترونية محمولة فاخرة", price: "$40.00", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&q=80", sku: 4000004},
+      {title: "عطر رجالي خشبي أنيق", price: "$38.00", img: "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?w=400&q=80", sku: 4000005}
+    ],
+    accessories: [
+      {title: "حقيبة يد نسائية كلاسيكية جلدية", price: "$42.00", img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80", sku: 5000001},
+      {title: "نظارة شمسية عصرية بإطار أنيق", price: "$20.00", img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&q=80", sku: 5000002},
+      {title: "سوار يد معدني مطلي بالذهب", price: "$16.00", img: "https://images.unsplash.com/photo-1611591475281-8d995e865487?w=400&q=80", sku: 5000003},
+      {title: "قلادة نسائية بتصميم هندسي راقٍ", price: "$24.00", img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&q=80", sku: 5000004},
+      {title: "محفظة بطاقات جلدية عملية", price: "$15.00", img: "https://images.unsplash.com/photo-1509319117193-57bab727e09d?w=400&q=80", sku: 5000005}
+    ]
   };
 
-  function buildCategory(catKey, gridId) {
-    let data = categoriesData[catKey];
+  function renderCategory(catKey, gridId) {
+    let items = catalogData[catKey];
     let html = "";
-    for(let i=1; i<=100; i++) {
-      let titleIdx = (i - 1) % data.titles.length;
-      let title = data.titles[titleIdx] + " (" + i + ")";
-      
-      // معادلة سعر ثابتة لا تتغير أبداً لنفس الصنف بناءً على رقمه التسلسلي
-      let priceVal = 15 + ((i * 3) % 40);
-      let price = "$" + priceVal + ".00";
-      
-      // مطابقة صحيحة ودقيقة للصورة مع القسم
-      let imgUrl = data.images[titleIdx % data.images.length];
-      let link = `https://ar.shein.com/product-p-${data.baseSku + i}.html?aff_code=${affCode}`;
-      
-      html += `
-        <div class="card product-card">
-          <img src="${imgUrl}" alt="${title}" loading="lazy">
-          <div class="card-body">
-            <div>
-              <h3 class="product-title">${title}</h3>
-              <div class="price">${price}</div>
+    // تكرار العناصر بذكاء لضمان الغزارة المطلوبة وبشكل مستقر تماماً دون أي ضغط على المتصفح
+    for (let round = 0; round < 15; round++) {
+      items.forEach((item, index) => {
+        let uniqueId = (round * items.length) + index + 1;
+        let finalSku = item.sku + round;
+        let link = `https://ar.shein.com/product-p-${finalSku}.html?aff_code=${affCode}`;
+        
+        html += `
+          <div class="card product-card">
+            <img src="${item.img}" alt="${item.title}" loading="lazy">
+            <div class="card-body">
+              <div>
+                <h3 class="product-title">${item.title} (${uniqueId})</h3>
+                <div class="price">${item.price}</div>
+              </div>
+              <a href="${link}" target="_blank" class="btn buy-btn">${currentLang === 'ar' ? 'معاينة وطلب آمن' : 'Secure View & Order'}</a>
             </div>
-            <a href="${link}" target="_blank" class="btn buy-btn">${currentLang === 'ar' ? 'معاينة وطلب آمن' : 'Secure View & Order'}</a>
           </div>
-        </div>
-      `;
+        `;
+      });
     }
     document.getElementById(gridId).innerHTML = html;
   }
 
-  // بناء الأقسام الأربعة بدقة كاملة
-  buildCategory('fashion', 'fashion-grid');
-  buildCategory('electronics', 'electronics-grid');
-  buildCategory('perfumes', 'perfumes-grid');
-  buildCategory('accessories', 'accessories-grid');
+  renderCategory('fashion', 'fashion-grid');
+  renderCategory('electronics', 'electronics-grid');
+  renderCategory('perfumes', 'perfumes-grid');
+  renderCategory('accessories', 'accessories-grid');
 
   function filterProducts() {
     let query = document.getElementById('search-box').value.toLowerCase();
@@ -238,10 +212,10 @@
       document.getElementById('title-elec').innerText = "Electronics & Gadgets";
       document.getElementById('title-perf').innerText = "Perfumes & Beauty";
       document.getElementById('title-acc').innerText = "Accessories & Jewelry";
-      document.getElementById('count-fashion').innerText = "(100 curated items)";
-      document.getElementById('count-elec').innerText = "(100 curated items)";
-      document.getElementById('count-perf').innerText = "(100 curated items)";
-      document.getElementById('count-acc').innerText = "(100 curated items)";
+      document.getElementById('count-fashion').innerText = "(Curated Catalog)";
+      document.getElementById('count-elec').innerText = "(Curated Catalog)";
+      document.getElementById('count-perf').innerText = "(Curated Catalog)";
+      document.getElementById('count-acc').innerText = "(Curated Catalog)";
       document.getElementById('footer-text').innerText = "All Rights Reserved © 2026 - Banafsajcom.com";
       document.querySelectorAll('.buy-btn').forEach(btn => btn.innerText = "Secure View & Order");
     } else {
@@ -256,4 +230,20 @@
       document.getElementById('nav-fashion').innerText = "أزياء وملابس";
       document.getElementById('nav-elec').innerText = "إلكترونيات";
       document.getElementById('nav-perf').innerText = "عطور وتجميل";
-      document.getElementById('nav-acc').
+      document.getElementById('nav-acc').innerText = "إكسسوارات";
+      document.getElementById('title-fashion').innerText = "أزياء وملابس";
+      document.getElementById('title-elec').innerText = "إلكترونيات ومنوعات";
+      document.getElementById('title-perf').innerText = "العطور والتجميل";
+      document.getElementById('title-acc').innerText = "الإكسسوارات والمجوهرات";
+      document.getElementById('count-fashion').innerText = "(كتالوج منسق)";
+      document.getElementById('count-elec').innerText = "(كتالوج منسق)";
+      document.getElementById('count-perf').innerText = "(كتالوج منسق)";
+      document.getElementById('count-acc').innerText = "(كتالوج منسق)";
+      document.getElementById('footer-text').innerText = "جميع الحقوق محفوظة © 2026 - Banafsajcom.com | متجر بنفسج للتسوق الإلكتروني";
+      document.querySelectorAll('.buy-btn').forEach(btn => btn.innerText = "معاينة وطلب آمن");
+    }
+  }
+</script>
+
+</body>
+</html>
