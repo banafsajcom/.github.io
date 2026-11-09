@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">متجر بنفسج - Banafsajcom</title>
+  <title>متجر بنفسج - Banafsajcom</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -26,7 +26,6 @@
     .controls-bar { display: flex; gap: 10px; align-items: center; }
     .search-input { padding: 8px 12px; border: 2px solid #ddd; border-radius: 20px; font-size: 14px; font-family: 'Cairo'; width: 180px; outline: none; }
     .search-input:focus { border-color: var(--primary); }
-    .lang-btn { background: var(--primary); color: #fff; border: none; padding: 8px 14px; border-radius: 18px; cursor: pointer; font-family: 'Cairo'; font-weight: 700; }
     
     nav { background: var(--primary); padding: 10px 20px; text-align: center; }
     nav a { color: #fff; text-decoration: none; font-weight: 700; font-size: 15px; margin: 0 15px; display: inline-block; }
@@ -57,73 +56,73 @@
 
 <header>
   <div class="top-bar">
-    <a href="#" class="logo" id="logo-text">💜 متجر بنفسج | Banafsaj</a>
+    <a href="#" class="logo">💜 متجر بنفسج | Banafsaj</a>
     
     <div class="contact-info">
-      <span id="email-text">✉️ info@banafsajcom.com</span>
-      <span id="phone-text">📞 <a href="tel:+96100000000">+961 00 000 000</a></span>
+      <span>✉️ info@banafsajcom.com</span>
+      <span>📞 <a href="tel:+96100000000">+961 00 000 000</a></span>
     </div>
 
     <div class="controls-bar">
       <input type="text" id="search-box" class="search-input" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
-      <button class="lang-btn" onclick="toggleLanguage()" id="lang-toggle-btn">English</button>
     </div>
   </div>
 
   <nav>
-    <a href="#fashion" id="nav-fashion">أزياء وملابس</a>
-    <a href="#electronics" id="nav-elec">إلكترونيات</a>
-    <a href="#perfumes" id="nav-perf">عطور وتجميل</a>
-    <a href="#accessories" id="nav-acc">إكسسوارات</a>
+    <a href="#fashion">أزياء وملابس</a>
+    <a href="#electronics">إلكترونيات</a>
+    <a href="#perfumes">عطور وتجميل</a>
+    <a href="#accessories">إكسسوارات</a>
   </nav>
 </header>
 
 <div class="container">
   <div class="hero">
-    <h1 id="main-heading">أهلاً بك في متجر بنفسج</h1>
-    <p id="sub-heading">أبرز 400 منتج مختار بعناية من شي إن بتسعير مباشر</p>
+    <h1>أهلاً بك في متجر بنفسج</h1>
+    <p>دليلك المختار لأرقى منتجات شي إن بتنصيف دقيق وسهل</p>
   </div>
 
   <section id="fashion">
-    <h2 id="title-fashion">أزياء وملابس (100 صنف)</h2>
+    <h2>أزياء وملابس (100 صنف)</h2>
     <div class="grid" id="fashion-grid"></div>
   </section>
 
   <section id="electronics">
-    <h2 id="title-elec">إلكترونيات ومنوعات (100 صنف)</h2>
+    <h2>إلكترونيات ومنوعات (100 صنف)</h2>
     <div class="grid" id="electronics-grid"></div>
   </section>
 
   <section id="perfumes">
-    <h2 id="title-perf">العطور والتجميل (100 صنف)</h2>
+    <h2>العطور والتجميل (100 صنف)</h2>
     <div class="grid" id="perfumes-grid"></div>
   </section>
 
   <section id="accessories">
-    <h2 id="title-acc">الإكسسوارات والمجوهرات (100 صنف)</h2>
+    <h2>الإكسسوارات والمجوهرات (100 صنف)</h2>
     <div class="grid" id="accessories-grid"></div>
   </section>
 </div>
 
 <footer>
-  <p id="footer-text">جميع الحقوق محفوظة © 2026 - Banafsajcom.com</p>
+  <p>جميع الحقوق محفوظة © 2026 - Banafsajcom.com</p>
 </footer>
 
 <script>
   const affCode = "FgiHU90Jmtk_01_KOC-C";
-  let currentLang = 'ar';
 
   const imgPool = {
     fashion: [
       "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80",
       "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&q=80",
       "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&q=80",
-      "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=400&q=80"
+      "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=400&q=80",
+      "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80"
     ],
     elec: [
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80",
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
-      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80"
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80",
+      "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&q=80"
     ],
     perf: [
       "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&q=80",
@@ -141,7 +140,7 @@
     let html = "";
     for(let i=1; i<=100; i++) {
       let title = titles[(i-1) % titles.length] + " - موديل " + i;
-      let price = (12 + (i * 3) % 45) + " USD";
+      let price = "$" + (15 + (i * 2) % 35); // أسعار منطقية ومقبولة
       let imgUrl = categoryImages[(i-1) % categoryImages.length];
       let link = `https://ar.shein.com/product-p-${baseSku + i}.html?aff_code=${affCode}`;
       html += `
@@ -152,7 +151,7 @@
               <h3 class="product-title">${title}</h3>
               <div class="price">${price}</div>
             </div>
-            <a href="${link}" target="_blank" class="btn buy-btn">شراء من SHEIN برمزك</a>
+            <a href="${link}" target="_blank" class="btn">معاينة وطلب من شي إن</a>
           </div>
         </div>
       `;
@@ -160,10 +159,10 @@
     document.getElementById(gridId).innerHTML = html;
   }
 
-  generateCategory('fashion-grid', ["فستان نسائي أنيق كاجوال", "قميص صيفي مريح", "بنطال جينز عصري", "سترة شتوية أنيقة"], 2000000, imgPool.fashion);
-  generateCategory('electronics-grid', ["سماعات بلوتوث لاسلكية", "ساعة ذكية رياضية", "إضاءة LED للمكتب", "حامل هاتف للسيارة"], 3000000, imgPool.elec);
-  generateCategory('perfumes-grid', ["عطر نسائي زهري منعش", "زيت عطري للسيارة والمنزل", "بخاخ معطر للجسم"], 4000000, imgPool.perf);
-  generateCategory('accessories-grid', ["حقيبة يد نسائية كلاسيكية", "نظارة شمسية كلاسيكية", "سوار ذهبي أنيق"], 5000000, imgPool.acc);
+  generateCategory('fashion-grid', ["فستان أنيق", "قميص كاجوال", "بنطال عصري", "سترة شتوية", "طقم راقٍ"], 2000000, imgPool.fashion);
+  generateCategory('electronics-grid', ["سماعات لاسلكية", "ساعة ذكية", "إضاءة مكتبية", "حامل هاتف"], 3000000, imgPool.elec);
+  generateCategory('perfumes-grid', ["عطر زهري منعش", "عطر فواح", "معطر جوي"], 4000000, imgPool.perf);
+  generateCategory('accessories-grid', ["حقيبة يد", "نظارة شمسية", "سوار أنيق"], 5000000, imgPool.acc);
 
   function filterProducts() {
     let query = document.getElementById('search-box').value.toLowerCase();
@@ -172,44 +171,6 @@
       let title = card.querySelector('.product-title').innerText.toLowerCase();
       card.style.display = title.includes(query) ? "flex" : "none";
     });
-  }
-
-  function toggleLanguage() {
-    let htmlRoot = document.getElementById('html-root');
-    let searchBox = document.getElementById('search-box');
-    let langBtn = document.getElementById('lang-toggle-btn');
-    
-    if(currentLang === 'ar') {
-      currentLang = 'en';
-      htmlRoot.setAttribute('lang', 'en');
-      htmlRoot.setAttribute('dir', 'ltr');
-      searchBox.placeholder = "Search product...";
-      langBtn.innerText = "العربية";
-      document.getElementById('logo-text').innerText = "💜 Banafsaj Store";
-      document.getElementById('main-heading').innerText = "Welcome to Banafsaj Store";
-      document.getElementById('sub-heading').innerText = "Top 400 curated products from SHEIN";
-      document.getElementById('nav-fashion').innerText = "Fashion";
-      document.getElementById('nav-elec').innerText = "Electronics";
-      document.getElementById('nav-perf').innerText = "Perfumes";
-      document.getElementById('nav-acc').innerText = "Accessories";
-      document.getElementById('footer-text').innerText = "All Rights Reserved © 2026 - Banafsajcom.com";
-      document.querySelectorAll('.buy-btn').forEach(btn => btn.innerText = "Buy on SHEIN");
-    } else {
-      currentLang = 'ar';
-      htmlRoot.setAttribute('lang', 'ar');
-      htmlRoot.setAttribute('dir', 'rtl');
-      searchBox.placeholder = "ابحث عن منتج...";
-      langBtn.innerText = "English";
-      document.getElementById('logo-text').innerText = "💜 متجر بنفسج | Banafsaj";
-      document.getElementById('main-heading').innerText = "أهلاً بك في متجر بنفسج";
-      document.getElementById('sub-heading').innerText = "أبرز 400 منتج مختار بعناية من شي إن بتسعير مباشر";
-      document.getElementById('nav-fashion').innerText = "أزياء وملابس";
-      document.getElementById('nav-elec').innerText = "إلكترونيات";
-      document.getElementById('nav-perf').innerText = "عطور وتجميل";
-      document.getElementById('nav-acc').innerText = "إكسسوارات";
-      document.getElementById('footer-text').innerText = "جميع الحقوق محفوظة © 2026 - Banafsajcom.com";
-      document.querySelectorAll('.buy-btn').forEach(btn => btn.innerText = "شراء من SHEIN برمزك");
-    }
   }
 </script>
 
