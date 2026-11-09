@@ -4,45 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="page-title">متجر بنفسج - Banafsajcom</title>
+  <!-- استدعاء خط Cairo الأنيق -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-color: #6a0dad;
-      --secondary-color: #8e44ad;
-      --accent-color: #e74c3c;
-      --bg-color: #f8f9fa;
-      --text-color: #333;
+      --primary: #5e17eb;
+      --primary-dark: #4510b8;
+      --accent: #ff3366;
+      --bg: #f4f5f9;
+      --card-bg: #ffffff;
+      --text: #2d3436;
     }
-    body { font-family: Tahoma, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-color); }
+    * { box-sizing: border-box; transition: all 0.2s ease; }
+    body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); }
     
-    header { background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-    .top-bar { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-    .logo { font-size: 24px; font-weight: bold; color: var(--primary-color); text-decoration: none; }
+    header { background: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; }
+    .top-bar { max-width: 1250px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+    .logo { font-size: 26px; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
     
-    .contact-info { font-size: 14px; color: #666; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
-    
-    /* أزرار البحث واللغة */
+    .contact-info { font-size: 14px; color: #636e72; display: flex; gap: 18px; align-items: center; font-weight: 600; }
+    .contact-info a { color: var(--primary); text-decoration: none; }
+
     .controls-bar { display: flex; gap: 10px; align-items: center; }
-    .search-input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; width: 200px; outline: none; }
-    .lang-btn { background: var(--primary-color); color: #fff; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-    .lang-btn:hover { background: var(--secondary-color); }
+    .search-input { padding: 9px 15px; border: 2px solid #e2e8f0; border-radius: 25px; font-size: 14px; font-family: 'Cairo'; width: 220px; outline: none; }
+    .search-input:focus { border-color: var(--primary); }
+    .lang-btn { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family: 'Cairo'; font-weight: 700; }
+    .lang-btn:hover { background: var(--primary-dark); }
 
-    nav { background: var(--primary-color); padding: 10px 20px; }
-    nav ul { max-width: 1200px; margin: 0 auto; padding: 0; list-style: none; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-    nav ul li a { color: #fff; text-decoration: none; font-weight: bold; font-size: 15px; transition: 0.3s; }
-    nav ul li a:hover { color: #ffeb3b; }
+    nav { background: var(--primary); padding: 4px 20px; }
+    nav ul { max-width: 1250px; margin: 0 auto; padding: 0; list-style: none; display: flex; gap: 25px; justify-content: center; flex-wrap: wrap; }
+    nav ul li a { color: #fff; text-decoration: none; font-weight: 700; font-size: 15px; padding: 8px 12px; display: block; }
+    nav ul li a:hover { color: #ffeaa7; }
 
-    .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-    section { margin-bottom: 40px; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    h2 { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); padding-bottom: 10px; margin-top: 0; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-    .card { border: 1px solid #eee; border-radius: 8px; padding: 20px; text-align: center; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(106, 13, 173, 0.15); }
-    .card h3 { font-size: 16px; color: #333; margin: 15px 0; height: 45px; overflow: hidden; }
-    .badge { background: #f3e5f5; color: var(--primary-color); padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; display: inline-block; margin-bottom: 10px; }
-    .btn { display: block; background: var(--primary-color); color: #fff; padding: 12px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: 0.3s; margin-top: 15px; }
-    .btn:hover { background: var(--secondary-color); }
+    .container { max-width: 1250px; margin: 30px auto; padding: 0 20px; }
+    .hero-banner { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; border-radius: 16px; padding: 35px 20px; text-align: center; margin-bottom: 40px; box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2); }
+    .hero-banner h1 { margin: 0 0 10px 0; font-size: 32px; font-weight: 800; }
+    .hero-banner p { margin: 0; font-size: 17px; opacity: 0.9; }
 
-    footer { background: #2c3e50; color: #fff; text-align: center; padding: 20px; margin-top: 40px; font-size: 14px; }
+    section { margin-bottom: 50px; }
+    .section-title { font-size: 22px; font-weight: 800; color: var(--primary-dark); margin-bottom: 25px; border-right: 5px solid var(--primary); padding-right: 12px; display: flex; align-items: center; justify-content: space-between; }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
+    .card { background: var(--card-bg); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #edf2f7; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(94, 23, 235, 0.12); }
+    .card img { width: 100%; height: 210px; object-fit: cover; background: #e2e8f0; }
+    .card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+    .card h3 { font-size: 15px; font-weight: 700; color: #2d3436; margin: 8px 0 12px 0; height: 42px; overflow: hidden; line-height: 1.4; }
+    .badge { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.9); color: var(--primary); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    
+    .btn { display: block; background: var(--primary); color: #fff; padding: 11px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 14px; text-align: center; }
+    .btn:hover { background: var(--primary-dark); }
+
+    footer { background: #1e1e24; color: #a0aec0; text-align: center; padding: 25px; margin-top: 50px; font-size: 14px; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -51,13 +64,11 @@
   <div class="top-bar">
     <a href="#" class="logo" id="logo-text">💜 متجر بنفسج | Banafsaj</a>
     
-    <!-- معلومات الاتصال ورقم الهاتف -->
     <div class="contact-info">
-      <span id="email-text">📧 info@banafsajcom.com</span>
-      <span id="phone-text">📞 الهاتف: يرجى إضافة رقمك هنا</span>
+      <span id="email-text">✉️ info@banafsajcom.com</span>
+      <span id="phone-text">📞 واتساب / هاتف: <a href="tel:+96100000000">+961 00 000 000</a></span>
     </div>
 
-    <!-- شريط البحث وزر اللغة -->
     <div class="controls-bar">
       <input type="text" id="search-box" class="search-input" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
       <button class="lang-btn" onclick="toggleLanguage()" id="lang-toggle-btn">English</button>
@@ -75,28 +86,28 @@
 </header>
 
 <div class="container">
-  <div style="text-align: center; margin: 30px 0;">
-    <h1 id="main-heading" style="color: var(--primary-color);">أهلاً بك في متجر بنفسج</h1>
-    <p id="sub-heading" style="color: #666;">أفضل 400 منتج مختار بعناية من شي إن لتسوق آمن ومضمون</p>
+  <div class="hero-banner">
+    <h1 id="main-heading">أهلاً بك في متجر بنفسج</h1>
+    <p id="sub-heading">أبرز 400 منتج مختار بعناية من شي إن لتسوق عصري وآمن</p>
   </div>
 
   <section id="fashion">
-    <h2 id="title-fashion">أزياء وملابس (100 صنف)</h2>
+    <div class="section-title"><span id="title-fashion">أزياء وملابس</span> <span>(100 صنف)</span></div>
     <div class="grid" id="fashion-grid"></div>
   </section>
 
   <section id="electronics">
-    <h2 id="title-elec">الكترونيات ومنوعات (100 صنف)</h2>
+    <div class="section-title"><span id="title-elec">إلكترونيات ومنوعات</span> <span>(100 صنف)</span></div>
     <div class="grid" id="electronics-grid"></div>
   </section>
 
   <section id="perfumes">
-    <h2>العطور والتجميل (100 صنف)</h2>
+    <div class="section-title"><span id="title-perf">العطور والتجميل</span> <span>(100 صنف)</span></div>
     <div class="grid" id="perfumes-grid"></div>
   </section>
 
   <section id="accessories">
-    <h2>الإكسسوارات والمجوهرات (100 صنف)</h2>
+    <div class="section-title"><span id="title-acc">الإكسسوارات والمجوهرات</span> <span>(100 صنف)</span></div>
     <div class="grid" id="accessories-grid"></div>
   </section>
 </div>
@@ -109,47 +120,65 @@
   const affCode = "FgiHU90Jmtk_01_KOC-C";
   let currentLang = 'ar';
 
-  function generateCategory(gridId, titles, baseSku, badgeText) {
+  // صور ثابتة واحترافية عالية الجودة تضمن ظهور المنتجات بشكل مبهر
+  const images = {
+    fashion: [
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&q=80",
+      "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&q=80",
+      "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=500&q=80",
+      "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=500&q=80"
+    ],
+    elec: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500&q=80"
+    ],
+    perf: [
+      "https://images.unsplash.com/photo-1541643600914-78b084683601?w=500&q=80",
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&q=80",
+      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&q=80"
+    ],
+    acc: [
+      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=500&q=80",
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&q=80",
+      "https://images.unsplash.com/photo-1611591475281-8d995e865487?w=500&q=80"
+    ]
+  };
+
+  function generateCategory(gridId, titles, baseSku, badgeText, categoryImages) {
     let html = "";
     for(let i=1; i<=100; i++) {
-      let title = titles[(i-1) % titles.length] + " #" + i;
+      let title = titles[(i-1) % titles.length] + " - موديل " + i;
+      let imgUrl = categoryImages[(i-1) % categoryImages.length];
       let link = `https://ar.shein.com/product-p-${baseSku + i}.html?aff_code=${affCode}`;
       html += `
         <div class="card product-card">
-          <div>
-            <span class="badge">${badgeText}</span>
+          <span class="badge">${badgeText}</span>
+          <img src="${imgUrl}" alt="${title}" loading="lazy">
+          <div class="card-body">
             <h3 class="product-title">${title}</h3>
+            <a href="${link}" target="_blank" class="btn buy-btn">عرض السعر والشراء من SHEIN</a>
           </div>
-          <a href="${link}" target="_blank" class="btn buy-btn">عرض السعر والشراء من شي إن</a>
         </div>
       `;
     }
     document.getElementById(gridId).innerHTML = html;
   }
 
-  generateCategory('fashion-grid', ["فستان نسائي أنيق كاجوال", "قميص صيفي مريح", "بنطال جينز عصري", "سترة شتوية أنيقة", "طقم ملابس رياضية", "بلوزة ناعمة بأكمام طويلة", "تنورة طويلة أنيقة", "معطف طويل كلاسيكي", "جاكيت جلد عصري", "بجامة نوم حريرية"], 2000000, "عروض شي إن");
-  
-  generateCategory('electronics-grid', ["سماعات بلوتوث لاسلكية", "ساعة ذكية رياضية", "إضاءة LED للمكتب", "حامل هاتف للسيارة", "شاحن سريع متعدد المنافذ", "مكبر صوت صغير محمول", "كابل شحن سريع متين", "مروحة مكتبية صغيرة USB", "لوحة مفاتيح لاسلكية", "مصابيح إضاءة للتصوير"], 3000000, "عروض شي إن");
-  
-  generateCategory('perfumes-grid', ["عطر نسائي زهري منعش", "زيت عطري للسيارة والمنزل", "بخاخ معطر للجسم", "مبخرة كهربائية محمولة", "عطر رجالي خشبي فواح", "مجموعة عينات عطور فاخرة", "معطر جو برائحة اللافندر", "عطر مسك ناعم يومي", "بخاخ شعر عطري مغذي", "شموع معطرة للاسترخاء"], 4000000, "عروض شي إن");
-  
-  generateCategory('accessories-grid', ["حقيبة يد نسائية كلاسيكية", "نظارة شمسية كلاسيكية", "سوار ذهبي أنيق", "قلادة بتصميم عصري", "محفظة بطاقات جلدية", "قبعة صيفية للحماية", "حزام يد جلدي", "أقراط مرصعة بالكريستال", "حقيبة ظهر عملية", "طقم خواتم متنوعة"], 5000000, "عروض شي إن");
+  generateCategory('fashion-grid', ["فستان نسائي أنيق كاجوال", "قميص صيفي مريح", "بنطال جينز عصري", "سترة شتوية أنيقة", "طقم ملابس رياضية", "بلوزة ناعمة بأكمام طويلة", "تنورة طويلة أنيقة"], 2000000, "SHEIN Choice", images.fashion);
+  generateCategory('electronics-grid', ["سماعات بلوتوث لاسلكية", "ساعة ذكية رياضية", "إضاءة LED للمكتب", "حامل هاتف للسيارة", "شاحن سريع متعدد المنافذ"], 3000000, "الأكثر مبيعاً", images.elec);
+  generateCategory('perfumes-grid', ["عطر نسائي زهري منعش", "زيت عطري للسيارة والمنزل", "بخاخ معطر للجسم", "مبخرة كهربائية محمولة", "عطر رجالي خشبي"], 4000000, "تخفيضات", images.perf);
+  generateCategory('accessories-grid', ["حقيبة يد نسائية كلاسيكية", "نظارة شمسية كلاسيكية", "سوار ذهبي أنيق", "قلادة بتصميم عصري", "محفظة بطاقات جلدية"], 5000000, "جديد", images.acc);
 
-  // وظيفة البحث الفوري
   function filterProducts() {
     let query = document.getElementById('search-box').value.toLowerCase();
     let cards = document.querySelectorAll('.product-card');
     cards.forEach(card => {
       let title = card.querySelector('.product-title').innerText.toLowerCase();
-      if(title.includes(query)) {
-        card.style.display = "flex";
-      } else {
-        card.style.display = "none";
-      }
+      card.style.display = title.includes(query) ? "flex" : "none";
     });
   }
 
-  // تبديل اللغة (عربي / إنجليزي)
   function toggleLanguage() {
     let htmlRoot = document.getElementById('html-root');
     let searchBox = document.getElementById('search-box');
@@ -162,8 +191,6 @@
       searchBox.placeholder = "Search product...";
       langBtn.innerText = "العربية";
       document.getElementById('logo-text').innerText = "💜 Banafsaj Store";
-      document.getElementById('email-text').innerText = "📧 info@banafsajcom.com";
-      document.getElementById('phone-text').innerText = "📞 Phone: Add your number here";
       document.getElementById('main-heading').innerText = "Welcome to Banafsaj Store";
       document.getElementById('sub-heading').innerText = "Top 400 curated products from SHEIN";
       document.getElementById('nav-fashion').innerText = "Fashion";
@@ -179,16 +206,14 @@
       searchBox.placeholder = "ابحث عن منتج...";
       langBtn.innerText = "English";
       document.getElementById('logo-text').innerText = "💜 متجر بنفسج | Banafsaj";
-      document.getElementById('email-text').innerText = "📧 info@banafsajcom.com";
-      document.getElementById('phone-text').innerText = "📞 الهاتف: يرجى إضافة رقمك هنا";
       document.getElementById('main-heading').innerText = "أهلاً بك في متجر بنفسج";
-      document.getElementById('sub-heading').innerText = "أفضل 400 منتج مختار بعناية من شي إن لتسوق آمن ومضمون";
+      document.getElementById('sub-heading').innerText = "أبرز 400 منتج مختار بعناية من شي إن لتسوق عصري وآمن";
       document.getElementById('nav-fashion').innerText = "أزياء وملابس";
       document.getElementById('nav-elec').innerText = "إلكترونيات";
       document.getElementById('nav-perf').innerText = "عطور وتجميل";
       document.getElementById('nav-acc').innerText = "إكسسوارات";
       document.getElementById('footer-text').innerText = "جميع الحقوق محفوظة © 2026 - Banafsajcom.com";
-      document.querySelectorAll('.buy-btn').forEach(btn => btn.innerText = "عرض السعر والشراء من شي إن");
+      document.querySelectorAll('.buy-btn').forEach(btn => btn.innerText = "عرض السعر والشراء من SHEIN");
     }
   }
 </script>
