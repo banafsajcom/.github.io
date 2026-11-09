@@ -11,70 +11,7 @@
 </head>
 <body>
 <header class="nav">
-  <!-- حاوية عرض المنتجات حسب الفئات -->
-<div id="categories-container" style="max-width: 1200px; margin: 0 auto; padding: 20px; font-family: sans-serif;">
-  <p style="text-align: center; color: #666;">جاري تحميل المنتجات...</p>
-</div>
 
-<script>
-  // جلب وقراءة ملف الـ CSV المعروض على الموقع
-  fetch('shein_top_400_products.csv')
-    .then(response => response.text())
-    .then(data => {
-      const rows = data.split('\n').slice(1); // إهمال السطر الأول (العناوين)
-      const categories = {};
-
-      rows.forEach(row => {
-        if (!row.trim()) return;
-        
-        // استخراج تفاصيل كل منتج من أسطر الـ CSV
-        const cols = row.split(',');
-        const category = cols[1] ? cols[1].trim() : 'منوعات';
-        const title = cols[2] ? cols[2].trim() : 'منتج شي إن';
-        const price = cols[3] ? cols[3].trim() : '';
-        const link = cols[4] ? cols[4].trim() : '#';
-        const image = cols[5] ? cols[5].trim() : '';
-
-        if (!categories[category]) {
-          categories[category] = [];
-        }
-
-        categories[category].push({ title, price, link, image });
-      });
-
-      // بناء واجهة العرض وتجميل الأقسام
-      let html = '';
-      for (const [catName, products] of Object.entries(categories)) {
-        html += `
-          <section style="margin-bottom: 40px;">
-            <h2 style="color: #2c3e50; border-bottom: 3px solid #ff69b4; padding-bottom: 8px; margin-bottom: 20px;">
-              ${catName} (${products.length} منتج)
-            </h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
-        `;
-
-        products.forEach(p => {
-          html += `
-            <div style="border: 1px solid #eee; border-radius: 8px; padding: 15px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center;">
-              <h3 style="font-size: 15px; color: #333; margin: 10px 0; height: 40px; overflow: hidden;">${p.title}</h3>
-              <p style="color: #e74c3c; font-weight: bold; margin-bottom: 12px;">${p.price}</p>
-              <a href="${p.link}" target="_blank" style="display: block; background: #ff69b4; color: #fff; padding: 10px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-                شراء عبر شي إن
-              </a>
-            </div>
-          `;
-        });
-
-        html += `</div></section>`;
-      }
-
-      document.getElementById('categories-container').innerHTML = html;
-    })
-    .catch(error => {
-      console.error('خطأ في تحميل البيانات:', error);
-      document.getElementById('categories-container').innerHTML = '<p style="color:red; text-align:center;">حدث خطأ أثناء تحميل المنتجات.</p>';
-    });
-</script>
 </body>
 </html>
   <div class="wrap nav-in">
@@ -90,7 +27,71 @@
     <button class="burger" id="burger" aria-label="Menu">☰</button>
   </div>
 </header>
+<div id="categories-container" style="max-width: 1200px; margin: 0 auto; padding: 20px; font-family: sans-serif;">
+  <p style="text-align: center; color: #666;">جاري تحميل المنتجات...</p>
+</div>
 
+<script>
+  fetch('shein_top_400_products.csv')
+    .then(response => response.text())
+    .then(data => {
+      const lines = data.split('\n');
+      const categories = {};
+
+      // نبدأ من السطر الثاني لتجاوز العناوين
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        // تقسيم السطر بحذر (العمود الثاني الفئة، الثالث الاسم، الرابع السعر، الخامس الرابط)
+        const cols = line.split(',');
+        if (cols.length < 5) continue;
+
+        const category = cols[1] ? cols[1].trim() : 'منوعات';
+        const title = cols[2] ? cols[2].trim() : 'منتج شي إن';
+        const price = cols[3] ? cols[3].trim() : '';
+        // دمج ما تبقى ليكون الرابط سليماً في حال وجود فواصل
+        const link = cols.slice(4).join(',').trim();
+
+        if (!categories[category]) {
+          categories[category] = [];
+        }
+
+        categories[category].push({ title, price, link });
+      }
+
+      let html = '';
+      for (const [catName, products] of Object.entries(categories)) {
+        html += `
+          <section style="margin: 30px 0; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="color: #2c3e50; border-bottom: 3px solid #ff69b4; padding-bottom: 8px; margin-bottom: 20px;">
+              ${catName} (${products.length} منتج)
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+        `;
+
+        products.forEach(p => {
+          html += `
+            <div style="border: 1px solid #eee; border-radius: 8px; padding: 15px; background: #fff; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+              <h3 style="font-size: 15px; color: #333; margin: 10px 0; height: 45px; overflow: hidden;">${p.title}</h3>
+              <p style="color: #e74c3c; font-weight: bold; margin-bottom: 12px; font-size: 16px;">${p.price}</p>
+              <a href="${p.link}" target="_blank" style="display: block; background: #ff69b4; color: #fff; padding: 10px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                شراء عبر شي إن
+              </a>
+            </div>
+          `;
+        });
+
+        html += </div></section>;
+      }
+
+      document.getElementById('categories-container').innerHTML = html;
+    })
+    .catch(error => {
+      console.error('خطأ:', error);
+      document.getElementById('categories-container').innerHTML = '<p style="color:red; text-align:center;">حدث خطأ في تحميل المنتجات.</p>';
+    });
+</script>
 <section class="hero" id="top">
   <div class="wrap hero-in">
     <div>
