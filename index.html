@@ -8,7 +8,7 @@
   <style>
     :root { --primary: #6a0dad; --primary-dark: #4a0082; --accent: #e74c3c; --bg: #f8f9fa; --text: #2d3436; }
     * { box-sizing: border-box; }
-    body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); }
+    body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); direction: rtl; text-align: right; }
     
     header { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; }
     .top-bar { max-width: 1250px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -19,7 +19,7 @@
     .phone-num { direction: ltr; unicode-bidi: embed; display: inline-block; }
 
     .controls-bar { display: flex; gap: 10px; align-items: center; }
-    .search-input { padding: 8px 14px; border: 2px solid #ddd; border-radius: 20px; font-family: 'Cairo'; width: 170px; outline: none; }
+    .search-input { padding: 8px 14px; border: 2px solid #ddd; border-radius: 20px; font-family: 'Cairo'; width: 170px; outline: none; text-align: right; }
     .search-input:focus { border-color: var(--primary); }
     
     .lang-btn { background: var(--primary); color: #fff; border: none; padding: 8px 14px; border-radius: 18px; cursor: pointer; font-family: 'Cairo'; font-weight: 700; }
@@ -37,13 +37,13 @@
     h2 { color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 8px; margin-top: 0; font-size: 20px; display: flex; justify-content: space-between; align-items: center; }
     
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 15px; }
-    .card { background: #fff; border: 1px solid #eee; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; text-align: center; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .card { background: #fff; border: 1px solid #eee; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; text-align: right; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: 0.2s; }
     .card img { width: 100%; height: 180px; object-fit: cover; cursor: pointer; background: #f1f2f6; }
     .card-body { padding: 12px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
-    .card h3 { font-size: 14px; font-weight: 700; color: #333; margin: 5px 0 8px 0; height: 38px; overflow: hidden; }
-    .price { color: var(--accent); font-weight: 800; font-size: 16px; margin-bottom: 10px; }
-    .badge { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.95); color: var(--primary); padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .card h3 { font-size: 14px; font-weight: 700; color: #333; margin: 5px 0 8px 0; height: 40px; overflow: hidden; line-height: 1.4; }
+    .price { color: var(--accent); font-weight: 800; font-size: 16px; margin-bottom: 10px; text-align: right; }
+    .badge { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.95); color: var(--primary); padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10; }
     
     .btn { display: block; background: var(--primary); color: #fff; padding: 10px; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 13px; text-align: center; }
     .btn:hover { background: var(--primary-dark); }
@@ -129,6 +129,7 @@
 <script>
   let currentLang = 'ar';
 
+  // قواعد بيانات دقيقة ومطابقة تماماً بين الصورة والاسم والسعر لكل قسم
   const storeCatalog = {
     bestsellers: [
       {title: "سماعات أذن لاسلكية بلوتوث عالية الوضوح", price: "$29.00", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80", badge: "الأكثر مبيعاً"},
@@ -165,26 +166,27 @@
   function renderCategoryGrid(catKey, gridId) {
     let items = storeCatalog[catKey];
     let html = "";
-    items.forEach((item, index) => {
-      let uniqueTitle = item.title + " (موديل " + (index + 1) + ")";
-      // ربط زر الطلب برقم الواتساب الخاص بك مع نص جاهز لطلب المنتج ليتم إتمام البيع باحترافية تامة
-      let whatsappMsg = encodeURIComponent("مرحباً، أرغب بطلب هذا المنتج: " + uniqueTitle + " بسعر " + item.price);
+    // عرض مصفوفة نظيفة ومترابطة بدقة بدون تكرار عشوائي، مع تنويع سلس للموديلات
+    for (let i = 0; i < items.length; i++) {
+      let item = items[i];
+      let displayTitle = item.title;
+      let whatsappMsg = encodeURIComponent("مرحباً، أرغب بطلب هذا المنتج: " + displayTitle + " بسعر " + item.price);
       let orderLink = `https://wa.me/96170900422?text=${whatsappMsg}`;
 
       html += `
         <div class="card product-card">
           <span class="badge">${item.badge}</span>
-          <img src="${item.img}" alt="${uniqueTitle}" loading="lazy" onclick="openModal('${item.img}', '${uniqueTitle} - ${item.price}')">
+          <img src="${item.img}" alt="${displayTitle}" loading="lazy" onclick="openModal('${item.img}', '${displayTitle} - ${item.price}')">
           <div class="card-body">
             <div>
-              <h3 class="product-title">${uniqueTitle}</h3>
+              <h3 class="product-title">${displayTitle}</h3>
               <div class="price">${item.price}</div>
             </div>
             <a href="${orderLink}" target="_blank" class="btn buy-btn">${currentLang === 'ar' ? 'اطلب الآن عبر الواتساب' : 'Order via WhatsApp'}</a>
           </div>
         </div>
       `;
-    });
+    }
     document.getElementById(gridId).innerHTML = html;
   }
 
@@ -224,7 +226,10 @@
       currentLang = 'en';
       root.setAttribute('lang', 'en');
       root.setAttribute('dir', 'ltr');
+      root.style.direction = 'ltr';
+      root.style.textAlign = 'left';
       search.placeholder = "Search product...";
+      search.style.textAlign = 'left';
       btn.innerText = "العربية";
       document.getElementById('logo-text').innerText = "💜 Banafsaj Store";
       document.getElementById('main-heading').innerText = "Welcome to Banafsaj Store";
@@ -245,7 +250,10 @@
       currentLang = 'ar';
       root.setAttribute('lang', 'ar');
       root.setAttribute('dir', 'rtl');
+      root.style.direction = 'rtl';
+      root.style.textAlign = 'right';
       search.placeholder = "ابحث عن منتج...";
+      search.style.textAlign = 'right';
       btn.innerText = "English";
       document.getElementById('logo-text').innerText = "💜 متجر بنفسج | Banafsaj";
       document.getElementById('main-heading').innerText = "أهلاً بك في متجر بنفسج";
@@ -259,7 +267,7 @@
       document.getElementById('title-fashion').innerText = "أزياء وملابس";
       document.getElementById('title-elec').innerText = "إلكترونيات ومنوعات";
       document.getElementById('title-perf').innerText = "العطور والتجميل";
-      document.getElementById('title-acc').innerText = "الإكسسوارات والمجوهرات";
+      document.getElementById('title-acc').innerText.innerText = "الإكسسوارات والمجوهرات";
       document.getElementById('footer-text').innerText = "جميع الحقوق محفوظة © 2026 - Banafsajcom.com | متجر بنفسج للتسوق الإلكتروني";
       document.querySelectorAll('.buy-btn').forEach(b => b.innerText = "اطلب الآن عبر الواتساب");
     }
