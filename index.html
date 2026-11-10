@@ -90,27 +90,27 @@
   </div>
 
   <section id="bestsellers" style="border: 2px solid var(--primary);">
-    <h2 id="title-best">🔥 الأصناف الأكثر طلباً ومبيعاً <span style="font-size:14px; color:#666;">(100 صنف)</span></h2>
+    <h2 id="title-best">🔥 الأصناف الأكثر طلباً ومبيعاً</h2>
     <div class="grid" id="grid-bestsellers"></div>
   </section>
 
   <section id="fashion">
-    <h2 id="title-fashion">أزياء وملابس <span style="font-size:14px; color:#666;">(100 صنف)</span></h2>
+    <h2 id="title-fashion">أزياء وملابس</h2>
     <div class="grid" id="grid-fashion"></div>
   </section>
 
   <section id="electronics">
-    <h2 id="title-elec">إلكترونيات ومنوعات <span style="font-size:14px; color:#666;">(100 صنف)</span></h2>
+    <h2 id="title-elec">إلكترونيات ومنوعات</h2>
     <div class="grid" id="grid-electronics"></div>
   </section>
 
   <section id="perfumes">
-    <h2 id="title-perf">العطور والتجميل <span style="font-size:14px; color:#666;">(100 صنف)</span></h2>
+    <h2 id="title-perf">العطور والتجميل</h2>
     <div class="grid" id="grid-perfumes"></div>
   </section>
 
   <section id="accessories">
-    <h2 id="title-acc">الإكسسوارات والمجوهرات <span style="font-size:14px; color:#666;">(100 صنف)</span></h2>
+    <h2 id="title-acc">الإكسسوارات والمجوهرات</h2>
     <div class="grid" id="grid-accessories"></div>
   </section>
 </div>
@@ -130,7 +130,7 @@
   const affCode = "FgiHU90Jmtk_01_KOC-C";
   let currentLang = 'ar';
 
-  const masterCatalog = {
+  const storeCatalog = {
     bestsellers: [
       {title: "سماعات أذن لاسلكية بلوتوث عالية الوضوح", price: "$29.00", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80", badge: "الأكثر مبيعاً"},
       {title: "فستان نسائي كاجوال راقٍ للمناسبات", price: "$25.00", img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80", badge: "ترند"},
@@ -163,51 +163,6 @@
     ]
   };
 
-  function renderCategory100(catKey, gridId) {
-    let baseList = masterData[catKey];
+  function renderCategoryGrid(catKey, gridId) {
+    let items = storeCatalog[catKey];
     let html = "";
-    for (let i = 1; i <= 100; i++) {
-      let item = baseList[(i - 1) % baseList.length];
-      let uniqueTitle = item.title + " (تشكيلة " + i + ")";
-      let affLink = `https://ar.shein.com/pdsearch/${encodeURIComponent(item.title)}/?aff_code=${affCode}`;
-
-      html += `
-        <div class="card product-card">
-          <span class="badge">${item.badge}</span>
-          <img src="${item.img}" alt="${uniqueTitle}" loading="lazy" onclick="openModal('${item.img}', '${uniqueTitle} - ${item.price}')">
-          <div class="card-body">
-            <div>
-              <h3 class="product-title">${uniqueTitle}</h3>
-              <div class="price">${item.price}</div>
-            </div>
-            <a href="${affLink}" target="_blank" class="btn buy-btn">${currentLang === 'ar' ? 'معاينة وطلب آمن من SHEIN' : 'Preview & Order on SHEIN'}</a>
-          </div>
-        </div>
-      `;
-    }
-    document.getElementById(gridId).innerHTML = html;
-  }
-
-  renderCategory100('bestsellers', 'grid-bestsellers');
-  renderCategory100('fashion', 'grid-fashion');
-  renderCategory100('electronics', 'grid-electronics');
-  renderCategory100('perfumes', 'grid-perfumes');
-  renderCategory100('accessories', 'grid-accessories');
-
-  function openModal(imgSrc, captionText) {
-    let modal = document.getElementById("imageModal");
-    let modalImg = document.getElementById("modalImg");
-    let captionDiv = document.getElementById("modalCaption");
-    modal.style.display = "block";
-    modalImg.src = imgSrc;
-    captionDiv.innerText = captionText;
-  }
-
-  function closeModal() {
-    document.getElementById("imageModal").style.display = "none";
-  }
-
-  function filterProducts() {
-    let q = document.getElementById('search-box').value.toLowerCase();
-    document.querySelectorAll('.product-card').forEach(card => {
-      let t
