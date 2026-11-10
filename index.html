@@ -1,7 +1,3 @@
-Gmail	Jawad <jawadbraish3@gmail.com>
-(no subject)
-Jawad <jawadbraish3@gmail.com>	10 November 2026 at 16:43
-To: Jawad <jawadbraish3@gmail.com>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -969,7 +965,7 @@ To: Jawad <jawadbraish3@gmail.com>
     // ===================== CHECKOUT =====================
     function checkout() {
       if (cart.length === 0) return;
-      const userConfirmed = confirm(currentLang === 'ar'
+      const userConfirmed = confirm(currentLang === 'ar' 
         ? "هام: لضمان احتساب طلبك، يرجى إتمام عملية الشراء من خلال متصفح الويب (وليس تطبيق Shein). هل أنت مستعد للمتابعة؟"
         : "Important: To ensure your order is tracked, please complete your purchase through the web browser (not the Shein app). Are you ready to continue?"
       );
@@ -981,8 +977,8 @@ To: Jawad <jawadbraish3@gmail.com>
         }
       });
       setTimeout(() => {
-        showToast(currentLang === 'ar'
-          ? `تذكير: استخدم كود الخصم "${UNIQUE_COUPON_CODE}" عند إتمام الطلب لتأكيد تتبع العمولة.`
+        showToast(currentLang === 'ar' 
+          ? `تذكير: استخدم كود الخصم "${UNIQUE_COUPON_CODE}" عند إتمام الطلب لتأكيد تتبع العمولة.` 
           : `Reminder: Use coupon code "${UNIQUE_COUPON_CODE}" at checkout to ensure commission tracking.`
         );
       }, 1000);
@@ -1025,14 +1021,14 @@ To: Jawad <jawadbraish3@gmail.com>
 
     function buyNow() {
       if (selectedProduct && selectedProduct.affiliateUrl) {
-        const userConfirmed = confirm(currentLang === 'ar'
+        const userConfirmed = confirm(currentLang === 'ar' 
           ? "هام: لضمان احتساب طلبك، يرجى إتمام عملية الشراء من خلال متصفح الويب (وليس تطبيق Shein). هل أنت مستعد للمتابعة؟"
           : "Important: To ensure your order is tracked, please complete your purchase through the web browser (not the Shein app). Are you ready to continue?"
         );
         if (!userConfirmed) return;
         window.open(selectedProduct.affiliateUrl, '_blank', 'noopener,noreferrer');
-        showToast(currentLang === 'ar'
-          ? `تذكير: استخدم كود الخصم "${UNIQUE_COUPON_CODE}" عند إتمام الطلب.`
+        showToast(currentLang === 'ar' 
+          ? `تذكير: استخدم كود الخصم "${UNIQUE_COUPON_CODE}" عند إتمام الطلب.` 
           : `Reminder: Use coupon code "${UNIQUE_COUPON_CODE}" at checkout.`
         );
         closeModal();
@@ -1119,4 +1115,3 @@ To: Jawad <jawadbraish3@gmail.com>
   </script>
 </body>
 </html>
-
