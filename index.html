@@ -130,7 +130,7 @@
   const affCode = "FgiHU90Jmtk_01_KOC-C";
   let currentLang = 'ar';
 
-  const masterData = {
+  const masterCatalog = {
     bestsellers: [
       {title: "سماعات أذن لاسلكية بلوتوث عالية الوضوح", price: "$29.00", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80", badge: "الأكثر مبيعاً"},
       {title: "فستان نسائي كاجوال راقٍ للمناسبات", price: "$25.00", img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80", badge: "ترند"},
@@ -166,11 +166,9 @@
   function renderCategory100(catKey, gridId) {
     let baseList = masterData[catKey];
     let html = "";
-    // توليد 100 صنف دقيق ومطابق لكل قسم مع رابط الأفلييت الفعال لشي إن
     for (let i = 1; i <= 100; i++) {
       let item = baseList[(i - 1) % baseList.length];
       let uniqueTitle = item.title + " (تشكيلة " + i + ")";
-      // رابط أفلييت شي إن الحقيقي الموجه للبحث والمنتجات مع كودك
       let affLink = `https://ar.shein.com/pdsearch/${encodeURIComponent(item.title)}/?aff_code=${affCode}`;
 
       html += `
@@ -212,5 +210,4 @@
   function filterProducts() {
     let q = document.getElementById('search-box').value.toLowerCase();
     document.querySelectorAll('.product-card').forEach(card => {
-      let t = card.querySelector('.product-title').innerText.toLowerCase();
-      card.style.display = t
+      let t
