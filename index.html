@@ -127,9 +127,9 @@
 </footer>
 
 <script>
+  const affCode = "FgiHU90Jmtk_01_KOC-C";
   let currentLang = 'ar';
 
-  // قوائم دقيقة ومطابقة تماماً لكل صنف مع صورته الأصلية المخصصة له
   const masterData = {
     bestsellers: [
       {title: "سماعات أذن لاسلكية بلوتوث عالية الوضوح", price: "$29.00", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80", badge: "الأكثر مبيعاً"},
@@ -166,12 +166,12 @@
   function renderCategory100(catKey, gridId) {
     let baseList = masterData[catKey];
     let html = "";
-    // توليد 100 صنف دقيق ومطابق لكل قسم (إجمالي 500 صنف مع قسم الأكثر مبيعاً) دون أي تلخبط أو تداخل
+    // توليد 100 صنف دقيق ومطابق لكل قسم مع رابط الأفلييت الفعال لشي إن
     for (let i = 1; i <= 100; i++) {
       let item = baseList[(i - 1) % baseList.length];
-      let uniqueTitle = item.title + " (طراز " + i + ")";
-      let whatsappMsg = encodeURIComponent("مرحباً، أرغب بطلب هذا المنتج: " + uniqueTitle + " بسعر " + item.price);
-      let orderLink = `https://wa.me/96170900422?text=${whatsappMsg}`;
+      let uniqueTitle = item.title + " (تشكيلة " + i + ")";
+      // رابط أفلييت شي إن الحقيقي الموجه للبحث والمنتجات مع كودك
+      let affLink = `https://ar.shein.com/pdsearch/${encodeURIComponent(item.title)}/?aff_code=${affCode}`;
 
       html += `
         <div class="card product-card">
@@ -182,7 +182,7 @@
               <h3 class="product-title">${uniqueTitle}</h3>
               <div class="price">${item.price}</div>
             </div>
-            <a href="${orderLink}" target="_blank" class="btn buy-btn">${currentLang === 'ar' ? 'اطلب الآن عبر الواتساب' : 'Order via WhatsApp'}</a>
+            <a href="${affLink}" target="_blank" class="btn buy-btn">${currentLang === 'ar' ? 'معاينة وطلب آمن من SHEIN' : 'Preview & Order on SHEIN'}</a>
           </div>
         </div>
       `;
@@ -213,66 +213,4 @@
     let q = document.getElementById('search-box').value.toLowerCase();
     document.querySelectorAll('.product-card').forEach(card => {
       let t = card.querySelector('.product-title').innerText.toLowerCase();
-      card.style.display = t.includes(q) ? "flex" : "none";
-    });
-  }
-
-  function toggleLanguage() {
-    let root = document.getElementById('html-root');
-    let search = document.getElementById('search-box');
-    let btn = document.getElementById('lang-toggle-btn');
-    
-    if(currentLang === 'ar') {
-      currentLang = 'en';
-      root.setAttribute('lang', 'en');
-      root.setAttribute('dir', 'ltr');
-      root.style.direction = 'ltr';
-      root.style.textAlign = 'left';
-      search.placeholder = "Search product...";
-      search.style.textAlign = 'left';
-      btn.innerText = "العربية";
-      document.getElementById('logo-text').innerText = "💜 Banafsaj Store";
-      document.getElementById('main-heading').innerText = "Welcome to Banafsaj Store";
-      document.getElementById('sub-heading').innerText = "Your premier destination for curated shopping securely";
-      document.getElementById('nav-best').innerText = "🔥 Best Sellers";
-      document.getElementById('nav-fashion').innerText = "Fashion";
-      document.getElementById('nav-elec').innerText = "Electronics";
-      document.getElementById('nav-perf').innerText = "Perfumes";
-      document.getElementById('nav-acc').innerText = "Accessories";
-      document.getElementById('title-best').innerText = "🔥 Best Selling Products (100 Items)";
-      document.getElementById('title-fashion').innerText = "Fashion & Apparel (100 Items)";
-      document.getElementById('title-elec').innerText = "Electronics & Gadgets (100 Items)";
-      document.getElementById('title-perf').innerText = "Perfumes & Beauty (100 Items)";
-      document.getElementById('title-acc').innerText = "Accessories & Jewelry (100 Items)";
-      document.getElementById('footer-text').innerText = "All Rights Reserved © 2026 - Banafsajcom.com";
-      document.querySelectorAll('.buy-btn').forEach(b => b.innerText = "Order via WhatsApp");
-    } else {
-      currentLang = 'ar';
-      root.setAttribute('lang', 'ar');
-      root.setAttribute('dir', 'rtl');
-      root.style.direction = 'rtl';
-      root.style.textAlign = 'right';
-      search.placeholder = "ابحث عن منتج...";
-      search.style.textAlign = 'right';
-      btn.innerText = "English";
-      document.getElementById('logo-text').innerText = "💜 متجر بنفسج | Banafsaj";
-      document.getElementById('main-heading').innerText = "أهلاً بك في متجر بنفسج";
-      document.getElementById('sub-heading').innerText = "وجهتك الأولى لتسوق أرقى وأحدث مختارات الموضة والإلكترونيات والعطور بأمان تام";
-      document.getElementById('nav-best').innerText = "🔥 الأكثر مبيعاً";
-      document.getElementById('nav-fashion').innerText = "أزياء وملابس";
-      document.getElementById('nav-elec').innerText = "إلكترونيات";
-      document.getElementById('nav-perf').innerText = "عطور وتجميل";
-      document.getElementById('nav-acc').innerText = "إكسسوارات";
-      document.getElementById('title-best').innerText = "🔥 الأصناف الأكثر طلباً ومبيعاً (100 صنف)";
-      document.getElementById('title-fashion').innerText = "أزياء وملابس (100 صنف)";
-      document.getElementById('title-elec').innerText = "إلكترونيات ومنوعات (100 صنف)";
-      document.getElementById('title-perf').innerText = "العطور والتجميل (100 صنف)";
-      document.getElementById('title-acc').innerText = "الإكسسوارات والمجوهرات (100 صنف)";
-      document.getElementById('footer-text').innerText = "جميع الحقوق محفوظة © 2026 - Banafsajcom.com | متجر بنفسج للتسوق الإلكتروني";
-      document.querySelectorAll('.buy-btn').forEach(b => b.innerText = "اطلب الآن عبر الواتساب");
-    }
-  }
-</script>
-
-</body>
-</html>
+      card.style.display = t
