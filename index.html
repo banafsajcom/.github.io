@@ -129,7 +129,6 @@
 <script>
   let currentLang = 'ar';
 
-  // قواعد بيانات دقيقة ومطابقة تماماً بين الصورة والاسم والسعر لكل قسم
   const storeCatalog = {
     bestsellers: [
       {title: "سماعات أذن لاسلكية بلوتوث عالية الوضوح", price: "$29.00", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80", badge: "الأكثر مبيعاً"},
@@ -166,27 +165,24 @@
   function renderCategoryGrid(catKey, gridId) {
     let items = storeCatalog[catKey];
     let html = "";
-    // عرض مصفوفة نظيفة ومترابطة بدقة بدون تكرار عشوائي، مع تنويع سلس للموديلات
-    for (let i = 0; i < items.length; i++) {
-      let item = items[i];
-      let displayTitle = item.title;
-      let whatsappMsg = encodeURIComponent("مرحباً، أرغب بطلب هذا المنتج: " + displayTitle + " بسعر " + item.price);
+    items.forEach((item) => {
+      let whatsappMsg = encodeURIComponent("مرحباً، أرغب بطلب هذا المنتج: " + item.title + " بسعر " + item.price);
       let orderLink = `https://wa.me/96170900422?text=${whatsappMsg}`;
 
       html += `
         <div class="card product-card">
           <span class="badge">${item.badge}</span>
-          <img src="${item.img}" alt="${displayTitle}" loading="lazy" onclick="openModal('${item.img}', '${displayTitle} - ${item.price}')">
+          <img src="${item.img}" alt="${item.title}" loading="lazy" onclick="openModal('${item.img}', '${item.title} - ${item.price}')">
           <div class="card-body">
             <div>
-              <h3 class="product-title">${displayTitle}</h3>
+              <h3 class="product-title">${item.title}</h3>
               <div class="price">${item.price}</div>
             </div>
             <a href="${orderLink}" target="_blank" class="btn buy-btn">${currentLang === 'ar' ? 'اطلب الآن عبر الواتساب' : 'Order via WhatsApp'}</a>
           </div>
         </div>
       `;
-    }
+    });
     document.getElementById(gridId).innerHTML = html;
   }
 
@@ -267,7 +263,7 @@
       document.getElementById('title-fashion').innerText = "أزياء وملابس";
       document.getElementById('title-elec').innerText = "إلكترونيات ومنوعات";
       document.getElementById('title-perf').innerText = "العطور والتجميل";
-      document.getElementById('title-acc').innerText.innerText = "الإكسسوارات والمجوهرات";
+      document.getElementById('title-acc').innerText = "الإكسسوارات والمجوهرات";
       document.getElementById('footer-text').innerText = "جميع الحقوق محفوظة © 2026 - Banafsajcom.com | متجر بنفسج للتسوق الإلكتروني";
       document.querySelectorAll('.buy-btn').forEach(b => b.innerText = "اطلب الآن عبر الواتساب");
     }
