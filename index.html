@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="products.js"></script>
   <style>
     :root {
       --primary: #6B2D7B;
@@ -392,30 +393,33 @@
     let selectedProduct = null;
 
     // ===================== 2. تحميل المنتجات من JSON =====================
-    async function loadProducts() {
-      try {
-        const response = await fetch('products.json');
-        if (!response.ok) throw new Error('File not found');
-        const data = await response.json();
-        
-        products = data.map((item, index) => {
-          let url = item.url || "";
-          // حقن كود التتبع تلقائياً
-          if (url && !url.includes(AFFILIATE_TRACKING)) {
-            url = url + (url.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
-          }
-          return {
-            id: item.id || index,
-            name_ar: item.name_ar || "منتج",
-            name_en: item.name_en || "Product",
-            desc_ar: item.desc_ar || "منتج مميز",
-            desc_en: item.desc_en || "",
-            price: parseFloat(item.price) || 0,
-            category: item.category || "fashion",
-            image: item.image || "",
-            affiliateUrl: url
-          };
-        });
+// ===================== 2. تحميل المنتجات =====================
+function loadProducts() {
+  try {
+    products = myProducts.map(item => {
+      let url = item.url || "";
+      if (url && !url.includes(AFFILIATE_TRACKING)) {
+        url = url + (url.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+      }
+      return {
+        id: item.id,
+        name_ar: item.name_ar,
+        name_en: item.name_en,
+        desc_ar: item.desc_ar,
+        desc_en: item.desc_en,
+        price: parseFloat(item.price) || 0,
+        category: item.category,
+        image: item.image,
+        affiliateUrl: url
+      };
+    });
+
+    renderProducts();
+    updateCartUI();
+  } catch (error) {
+    console.error("خطأ في تحميل المنتجات:", error);
+  }
+}
 
         renderProducts();
         updateCartUI();
