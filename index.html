@@ -1185,15 +1185,63 @@ async function loadProductsFromJSON() {
     });
 
     renderProducts();
-    updateCartUI();
-  } catch (error) {
-    console.error("خطأ في تحميل المنتجات:", error);
-    document.getElementById('productsGrid').innerHTML = `<p style="text-align:center; color:red;">حدث خطأ في تحميل المنتجات. يرجى المحاولة لاحقاً.</p>`;
-  }
+   // ===================== INIT & CSV LOADER =====================
+const AFFILIATE_TRACKING = "ismg_ol=FgiHU90Jmtk_01_KOC-C";
+
+function loadProductsFromCSV() {
+  // رابط مباشر لملف الـ CSV من حسابك على GitHub
+  const csvUrl = "https://raw.githubusercontent.com/banafsajcom/.github.io/main/400.csv";
+  
+  Papa.parse(csvUrl, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      try {
+        products = results.data.map((row, index) => {
+          let url = row.product_url || "";
+          if (url && !url.includes(AFFILIATE_TRACKING)) {
+            url = url + (url.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+          }
+
+          let cat = "accessories";
+          const topCat = (row.top_category || "").toLowerCase();
+          if (topCat.includes("cell phones") || topCat.includes("electronics")) cat = "electronics";
+          else if (topCat.includes("jewelry")) cat = "accessories";
+          else if (topCat.includes("home")) cat = "home";
+          else if (topCat.includes("apparel") || topCat.includes("fashion")) cat = "fashion";
+
+          let imgUrl = row.image_url || "";
+          if (imgUrl && imgUrl.includes("|")) imgUrl = imgUrl.split("|")[0];
+
+          return {
+            id: row.product_id || index,
+            name_ar: row.title || "منتج",
+            name_en: row.title || "Product",
+            desc_ar: "منتج مميز من متجر بنفسج",
+            desc_en: row.title,
+            price: parseFloat(row.price_usd) || 0,
+            category: cat,
+            image: imgUrl,
+            affiliateUrl: url
+          };
+        });
+
+        renderProducts();
+        updateCartUI();
+      } catch(e) {
+        console.error("خطأ في معالجة البيانات", e);
+      }
+    },
+    error: function(error) {
+       console.error("فشل تحميل الملف:", error);
+       document.getElementById('productsGrid').innerHTML = `<p style="text-align:center; color:red;">فشل تحميل المنتجات. تأكد من وجود ملف 400.csv</p>`;
+    }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadProductsFromJSON(); // استدعاء دالة JSON
+  loadProductsFromCSV(); // استدعاء دالة قراءة الـ CSV
 });
 // ===================== نهاية كود قراءة الملف =====================
     // ===================== INIT =====================
