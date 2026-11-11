@@ -1233,25 +1233,39 @@ function loadProductsFromCSV() {
         console.error("خطأ في معالجة البيانات", e);
       }
     },
-    error: function(error) {
-       console.error("فشل تحميل الملف:", error);
-       document.getElementById('productsGrid').innerHTML = `<p style="text-align:center; color:red;">فشل تحميل المنتجات. تأكد من وجود ملف 400.csv</p>`;
-    }
-  });
-}
+    // ===================== التشغيل النهائي =====================
+const AFFILIATE_TRACKING = "ismg_ol=FgiHU90Jmtk_01_KOC-C";
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadProductsFromJSON(); // استدعاء دالة قراءة الـ JSON
-});
-// ===================== نهاية كود قراءة الملف =====================
-    // ===================== INIT =====================
-   // document.addEventListener('DOMContentLoaded', () => {
-    //  renderProducts();
-    //  updateCartUI();
-   // });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { closeCart(); closeModal(); }
+async function loadProductsFromJSON() {
+  try {
+    const response = await fetch('products.json');
+    if (!response.ok) throw new Error('File not found');
+    const data = await response.json();
+    
+    products = data.map((item, index) => {
+      let url = item.url || "";
+      if (url && !url.includes(AFFILIATE_TRACKING)) {
+        url = url + (url.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+      }
+      return {
+        id: item.id || index,
+        name_ar: item.name_ar || "منتج",
+        name_en: item.name_en || "Product",
+        desc_ar: item.desc_ar || "منتج مميز",
+        desc_en: item.desc_en || "",
+        price: parseFloat(item.price) || 0,
+        category: item.category || "fashion",
+        image: item.image || "",
+        affiliateUrl: url
+      };
     });
+
+    renderProducts();
+    updateCartUI();
+  } catch (error) {
+    console.error("خطأ في تحميل المنتجات:", error);
+  }
+}
   </script>
   <script type="text/javascript" src="https://s.skimresources.com/js/312642X1801248.skimlinks.js"></script>
 </body>
