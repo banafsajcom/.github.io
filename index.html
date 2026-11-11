@@ -6,29 +6,51 @@
   <title>متجر بنفسج | Banafsaj Store</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #6B2D7B; --primary-dark: #4A1C55;
-      --bg: #F8F5FA; --card: #FFFFFF; --text: #2D1B36; --border: #E8DFF0;
-    }
+    :root { --primary: #6B2D7B; --primary-dark: #4A1C55; --bg: #F8F5FA; --card: #FFF; --text: #2D1B36; --border: #E8DFF0; --radius: 16px; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); }
-    header { background: var(--primary-dark); color: #fff; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 1.5rem; font-weight: bold; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    header { background: var(--primary-dark); color: #fff; padding: 1rem; position: sticky; top: 0; z-index: 1000; }
+    .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .logo { font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
+    .search-box { flex: 1; min-width: 200px; display: flex; }
+    .search-box input { width: 100%; padding: 0.7rem 1rem; border: none; border-radius: 50px; font-family: inherit; outline: none; }
+    .header-actions { display: flex; gap: 0.5rem; }
+    .btn-header { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-family: inherit; font-weight: bold; }
     .hero { background: var(--primary); color: #fff; padding: 2rem; text-align: center; }
     .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
-    .product-card { background: var(--card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
+    .product-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; border: 1px solid var(--border); }
     .product-img { width: 100%; height: 250px; object-fit: cover; }
     .product-body { padding: 1rem; display: flex; flex-direction: column; flex: 1; }
-    .product-title { font-weight: bold; margin-bottom: 0.5rem; height: 3rem; overflow: hidden; font-size: 0.9rem; }
+    .product-title { font-weight: bold; margin-bottom: 0.5rem; height: 3rem; overflow: hidden; font-size: 0.95rem; }
     .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-    .product-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
-    .btn { background: var(--primary); color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-family: inherit; }
+    .product-price { color: var(--primary); font-weight: 800; font-size: 1.2rem; }
+    .btn-add { background: var(--primary); color: #fff; border: none; padding: 0.6rem 1rem; border-radius: 50px; cursor: pointer; font-family: inherit; font-weight: bold; }
+    /* السلة */
+    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; }
+    .cart-overlay.open { display: block; }
+    .cart-sidebar { position: fixed; top: 0; left: 0; width: 350px; height: 100%; background: #fff; z-index: 2001; transform: translateX(-100%); transition: 0.3s; display: flex; flex-direction: column; }
+    .cart-overlay.open .cart-sidebar { transform: translateX(0); }
+    .cart-header { background: var(--primary); color: #fff; padding: 1rem; display: flex; justify-content: space-between; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 1rem; }
+    .cart-footer { padding: 1rem; border-top: 1px solid var(--border); }
+    .btn-checkout { width: 100%; padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
+    footer { background: var(--primary-dark); color: #fff; text-align: center; padding: 2rem 1rem; margin-top: 3rem; }
+    footer a { color: #C77DFF; text-decoration: none; font-weight: bold; }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">💜 متجر بنفسج</div>
+    <div class="header-inner">
+      <a href="#" class="logo">💜 متجر بنفسج</a>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="renderProducts()" />
+      </div>
+      <div class="header-actions">
+        <button class="btn-header" onclick="alert('ميزة اللغة ستتوفر قريباً!')">English</button>
+        <button class="btn-header" onclick="openCart()">🛒 السلة (<span id="cartCount">0</span>)</button>
+      </div>
+    </div>
   </header>
 
   <section class="hero">
@@ -40,9 +62,27 @@
     <div class="products-grid" id="productsGrid"></div>
   </main>
 
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart(event)">
+    <div class="cart-sidebar" onclick="event.stopPropagation()">
+      <div class="cart-header"><h2>السلة</h2><button onclick="closeCart()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">×</button></div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer">
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:bold;"><span>الإجمالي:</span><span id="cartTotal">$0.00</span></div>
+        <button class="btn-checkout" onclick="checkout()">إتمام الطلب</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>جميع الحقوق محفوظة © 2026 — متجر بنفسج</p>
+    <p style="margin-top: 10px;">للدعم والتواصل: <a href="mailto:combanafsaj@gmail.com">combanafsaj@gmail.com</a></p>
+  </footer>
+
+  <!-- من هنا يبدأ السكربت والمنتجات الـ 400 التي قمت بلصقها سابقاً -->
   <script>
-    // كود التتبع الخاص بك
     const AFFILIATE_TRACKING = "ismg_ol=FgiHU90Jmtk_01_KOC-C";
+    
+    // ⚠️ تأكد أن هذا الجزء (const myProducts) والمنتجات الـ 400 تحته موجودة هنا
 
     // المنتجات (مدمجة هنا لضمان العمل 100%)
     const myProducts = [
