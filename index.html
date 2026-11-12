@@ -484,8 +484,7 @@
       // ... (آخر منتج رقم 400)
    ];
 
-    let products = [];
-    let cart = JSON.parse(localStorage.getItem('banafsaj_cart_v7') || '[]');
+   let products = [];
     let currentLang = 'ar';
 
     // 1. دالة العرض
@@ -500,78 +499,29 @@
       
       grid.innerHTML = filtered.map(p => {
         let finalUrl = p.url;
+        // إضافة كود التتبع
         if (!finalUrl.includes(AFFILIATE_TRACKING)) {
             finalUrl = finalUrl + (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
         }
+        
         const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
-        const addBtnText = currentLang === 'ar' ? 'أضف' : 'Add';
-        const buyBtnText = currentLang === 'ar' ? 'اشتري الآن من شي إن' : 'Buy Now on Shein';
+        const buyBtnText = currentLang === 'ar' ? 'اشتري من Shein' : 'Buy on Shein';
 
         return `
           <div class="product-card">
             <img class="product-img" src="${p.image}" loading="lazy" onerror="this.src='https://placehold.co/250x250?text=Banafsaj'">
             <div class="product-body">
               <div class="product-title">${displayName}</div>
-              <div class="product-footer">
-                <div class="product-price">$${p.price}</div>
-                <button class="btn-add" onclick="addToCart(${p.id})">${addBtnText}</button>
+              <div class="product-footer" style="justify-content: center; margin-top: 15px;">
+                <a href="${finalUrl}" target="_blank" class="btn-add" style="text-decoration:none; text-align:center; width: 100%; display: block;">${buyBtnText}</a>
               </div>
-              <a href="${finalUrl}" target="_blank" style="display:block; text-align:center; margin-top:10px; font-size:0.8rem; color:#6B2D7B; text-decoration:none;">${buyBtnText}</a>
             </div>
           </div>
         `;
       }).join('');
     }
 
-    // 2. السلة
-    function addToCart(id) {
-      const existing = cart.find(item => item.id === id);
-      if (existing) existing.qty += 1;
-      else cart.push({ id, qty: 1 });
-      saveCart();
-    }
-
-    function saveCart() {
-      localStorage.setItem('banafsaj_cart_v7', JSON.stringify(cart));
-      updateCartUI();
-    }
-
-    function updateCartUI() {
-      const count = cart.reduce((sum, item) => sum + item.qty, 0);
-      document.getElementById('cartCount').textContent = count;
-      let total = 0;
-      document.getElementById('cartItems').innerHTML = cart.map(item => {
-        const p = myProducts.find(prod => prod.id === item.id);
-        if (!p) return '';
-        total += p.price * item.qty;
-        const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
-        return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
-                  <span>${displayName.substring(0,20)}... (x${item.qty})</span>
-                  <span>$${(p.price * item.qty).toFixed(2)}</span>
-                </div>`;
-      }).join('');
-      document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
-    }
-
-    function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
-    function closeCart(e) { if (e && e.target !== document.getElementById('cartOverlay')) return; document.getElementById('cartOverlay').classList.remove('open'); }
-    
-    function checkout() {
-      if (cart.length === 0) return;
-      cart.forEach(item => { 
-        const p = myProducts.find(prod => prod.id === item.id); 
-        if (p) {
-            let finalUrl = p.url;
-            if (!finalUrl.includes(AFFILIATE_TRACKING)) {
-                finalUrl = finalUrl + (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
-            }
-            window.open(finalUrl, '_blank'); 
-        }
-      });
-      cart = []; saveCart(); closeCart();
-    }
-
-    // 3. تبديل اللغة
+    // 2. تبديل اللغة
     function toggleLang() {
       currentLang = currentLang === 'ar' ? 'en' : 'ar';
       const html = document.documentElement;
@@ -580,27 +530,19 @@
       if (currentLang === 'en') {
         html.setAttribute('lang', 'en'); html.setAttribute('dir', 'ltr');
         langBtn.textContent = 'العربية';
-        document.querySelector('.logo').innerHTML = '💜 Banafsaj Store';
-        document.querySelector('.hero h1').textContent = 'Welcome to Banafsaj Store';
-        document.querySelector('.hero p').textContent = 'Fashion • Electronics • Accessories';
+        document.querySelector('.logo').innerHTML = '💜 Shein Products Guide | Banafsaj';
+        document.querySelector('.hero h1').textContent = 'We curate the best Shein products';
+        document.querySelector('.hero p').textContent = 'Browse our selected collection and buy directly from Shein.';
         document.getElementById('searchInput').placeholder = 'Search for a product...';
-        document.getElementById('cartBtnText').innerHTML = '🛒 Cart (<span id="cartCount">' + document.getElementById('cartCount').textContent + '</span>)';
-        document.getElementById('cartTitle').textContent = 'Shopping Cart';
-        document.getElementById('totalLabel').textContent = 'Total:';
-        document.getElementById('checkoutBtn').textContent = 'Checkout';
-        document.querySelector('footer p').textContent = 'All Rights Reserved © 2026 — Banafsaj Store';
+        document.querySelector('footer p').textContent = 'All Rights Reserved © 2026 — Banafsaj Guide';
       } else {
         html.setAttribute('lang', 'ar'); html.setAttribute('dir', 'rtl');
         langBtn.textContent = 'English';
-        document.querySelector('.logo').innerHTML = '💜 متجر بنفسج';
-        document.querySelector('.hero h1').textContent = 'أهلاً بك في متجر بنفسج';
-        document.querySelector('.hero p').textContent = 'أزياء • إلكترونيات • إكسسوارات';
+        document.querySelector('.logo').innerHTML = '💜 دليل منتجات Shein | بنفسج';
+        document.querySelector('.hero h1').textContent = 'نعرض لك أفضل منتجات Shein';
+        document.querySelector('.hero p').textContent = 'تصفح مجموعتنا المختارة من الأزياء والإلكترونيات والإكسسوارات، واشترِ مباشرة من Shein.';
         document.getElementById('searchInput').placeholder = 'ابحث عن منتج...';
-        document.getElementById('cartBtnText').innerHTML = '🛒 السلة (<span id="cartCount">' + document.getElementById('cartCount').textContent + '</span>)';
-        document.getElementById('cartTitle').textContent = 'السلة';
-        document.getElementById('totalLabel').textContent = 'الإجمالي:';
-        document.getElementById('checkoutBtn').textContent = 'إتمام الطلب';
-        document.querySelector('footer p').textContent = 'جميع الحقوق محفوظة © 2026 — متجر بنفسج';
+        document.querySelector('footer p').textContent = 'جميع الحقوق محفوظة © 2026 — دليل منتجات بنفسج';
       }
       renderProducts();
     }
