@@ -63,15 +63,21 @@
   </main>
 
   <div class="cart-overlay" id="cartOverlay" onclick="closeCart(event)">
-    <div class="cart-sidebar" onclick="event.stopPropagation()">
-      <div class="cart-header"><h2>السلة</h2><button onclick="closeCart()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">×</button></div>
-      <div class="cart-items" id="cartItems"></div>
-      <div class="cart-footer">
-        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:bold;"><span>الإجمالي:</span><span id="cartTotal">$0.00</span></div>
-        <button class="btn-checkout" onclick="checkout()">إتمام الطلب</button>
+  <div class="cart-sidebar" onclick="event.stopPropagation()">
+    <div class="cart-header">
+      <h2 id="cartTitle">السلة</h2>
+      <button onclick="closeCart()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">×</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:bold;">
+        <span id="totalLabel">الإجمالي:</span>
+        <span id="cartTotal">$0.00</span>
       </div>
+      <button class="btn-checkout" id="checkoutBtn" onclick="checkout()">إتمام الطلب</button>
     </div>
   </div>
+</div>
 
   <footer>
     <p>جميع الحقوق محفوظة © 2026 — متجر بنفسج</p>
