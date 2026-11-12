@@ -487,38 +487,48 @@
 {"id":399,"name_ar":"HEYBAO 5 Themes Miniature Scene Sticker","price":10.97,"image":"https://img.ltwebstatic.com/v4/j/spmp/2026/08/26/58/1787754918bdb81eaf3278ed6a9bf15248ae1cc5f3_square_thumbnail_405x552.jpg","url":"https://www.shein.co.uk/HEYBAO-5-Themes-Miniature-Scene-Sticker-Set-p-561760738.html"},
 {"id":400,"name_ar":"Cute Cartoon Girl Doodle Stickers","price":2.08,"image":"https://img.ltwebstatic.com/v4/j/spmp/2026/08/31/45/1788148457ab30674066f7f3efe8e59b797c42bfde_thumbnail_405x552.jpg","url":"https://www.shein.co.uk/Cute-Cartoon-Girl-Doodle-Stickers-p-562311620.html"}
       // ... (آخر منتج رقم 400)
-    ];
+   ];
 
     let products = [];
-    let cart = JSON.parse(localStorage.getItem('banafsaj_cart_v6') || '[]');
+    let cart = JSON.parse(localStorage.getItem('banafsaj_cart_v7') || '[]');
+    let currentLang = 'ar';
 
+    // 1. دالة العرض
     function renderProducts() {
       const grid = document.getElementById('productsGrid');
       const search = document.getElementById('searchInput').value.toLowerCase();
       
-      let filtered = myProducts.filter(p => p.name_ar.toLowerCase().includes(search));
+      let filtered = myProducts.filter(p => {
+        const name = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
+        return name.toLowerCase().includes(search);
+      });
       
       grid.innerHTML = filtered.map(p => {
         let finalUrl = p.url;
         if (!finalUrl.includes(AFFILIATE_TRACKING)) {
             finalUrl = finalUrl + (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
         }
+        const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
+        const addBtnText = currentLang === 'ar' ? 'أضف' : 'Add';
+        const buyBtnText = currentLang === 'ar' ? 'اشتري الآن من شي إن' : 'Buy Now on Shein';
+
         return `
           <div class="product-card">
             <img class="product-img" src="${p.image}" loading="lazy" onerror="this.src='https://placehold.co/250x250?text=Banafsaj'">
             <div class="product-body">
-              <div class="product-title">${p.name_ar}</div>
+              <div class="product-title">${displayName}</div>
               <div class="product-footer">
                 <div class="product-price">$${p.price}</div>
-                <button class="btn-add" onclick="addToCart(${p.id})">أضف</button>
+                <button class="btn-add" onclick="addToCart(${p.id})">${addBtnText}</button>
               </div>
-              <a href="${finalUrl}" target="_blank" style="display:block; text-align:center; margin-top:10px; font-size:0.8rem; color:#6B2D7B; text-decoration:none;">اشتري الآن من شي إن</a>
+              <a href="${finalUrl}" target="_blank" style="display:block; text-align:center; margin-top:10px; font-size:0.8rem; color:#6B2D7B; text-decoration:none;">${buyBtnText}</a>
             </div>
           </div>
         `;
       }).join('');
     }
 
+    // 2. السلة
     function addToCart(id) {
       const existing = cart.find(item => item.id === id);
       if (existing) existing.qty += 1;
@@ -527,7 +537,7 @@
     }
 
     function saveCart() {
-      localStorage.setItem('banafsaj_cart_v6', JSON.stringify(cart));
+      localStorage.setItem('banafsaj_cart_v7', JSON.stringify(cart));
       updateCartUI();
     }
 
@@ -539,8 +549,9 @@
         const p = myProducts.find(prod => prod.id === item.id);
         if (!p) return '';
         total += p.price * item.qty;
+        const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
         return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
-                  <span>${p.name_ar.substring(0,20)}... (x${item.qty})</span>
+                  <span>${displayName.substring(0,20)}... (x${item.qty})</span>
                   <span>$${(p.price * item.qty).toFixed(2)}</span>
                 </div>`;
       }).join('');
@@ -563,6 +574,40 @@
         }
       });
       cart = []; saveCart(); closeCart();
+    }
+
+    // 3. تبديل اللغة
+    function toggleLang() {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      const html = document.documentElement;
+      const langBtn = document.getElementById('langBtn');
+      
+      if (currentLang === 'en') {
+        html.setAttribute('lang', 'en'); html.setAttribute('dir', 'ltr');
+        langBtn.textContent = 'العربية';
+        document.querySelector('.logo').innerHTML = '💜 Banafsaj Store';
+        document.querySelector('.hero h1').textContent = 'Welcome to Banafsaj Store';
+        document.querySelector('.hero p').textContent = 'Fashion • Electronics • Accessories';
+        document.getElementById('searchInput').placeholder = 'Search for a product...';
+        document.getElementById('cartBtnText').innerHTML = '🛒 Cart (<span id="cartCount">' + document.getElementById('cartCount').textContent + '</span>)';
+        document.getElementById('cartTitle').textContent = 'Shopping Cart';
+        document.getElementById('totalLabel').textContent = 'Total:';
+        document.getElementById('checkoutBtn').textContent = 'Checkout';
+        document.querySelector('footer p').textContent = 'All Rights Reserved © 2026 — Banafsaj Store';
+      } else {
+        html.setAttribute('lang', 'ar'); html.setAttribute('dir', 'rtl');
+        langBtn.textContent = 'English';
+        document.querySelector('.logo').innerHTML = '💜 متجر بنفسج';
+        document.querySelector('.hero h1').textContent = 'أهلاً بك في متجر بنفسج';
+        document.querySelector('.hero p').textContent = 'أزياء • إلكترونيات • إكسسوارات';
+        document.getElementById('searchInput').placeholder = 'ابحث عن منتج...';
+        document.getElementById('cartBtnText').innerHTML = '🛒 السلة (<span id="cartCount">' + document.getElementById('cartCount').textContent + '</span>)';
+        document.getElementById('cartTitle').textContent = 'السلة';
+        document.getElementById('totalLabel').textContent = 'الإجمالي:';
+        document.getElementById('checkoutBtn').textContent = 'إتمام الطلب';
+        document.querySelector('footer p').textContent = 'جميع الحقوق محفوظة © 2026 — متجر بنفسج';
+      }
+      renderProducts();
     }
 
     document.addEventListener('DOMContentLoaded', renderProducts);
