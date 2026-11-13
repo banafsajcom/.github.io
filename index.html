@@ -681,5 +681,19 @@ function renderProducts() {
         </p>
     </div>
 </section>
+  <!-- سكربت إضافة rel="sponsored" للروابط التجارية -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() {
+      const allLinks = document.querySelectorAll('a');
+      allLinks.forEach(link => {
+        if (link.href.includes('shein.co.uk') || link.href.includes('onelink.shein.com')) {
+          link.setAttribute('rel', 'sponsored nofollow noopener');
+          link.setAttribute('target', '_blank'); 
+        }
+      });
+    }, 1000); 
+  });
+</script>
 </body>
 </html>
