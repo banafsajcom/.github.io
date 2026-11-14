@@ -689,32 +689,23 @@ function renderProducts() {
         </p>
     </div>
 </section>
-<!-- سكربت موحد: لتغيير النطاق حسب لغة الزائر + إضافة rel="sponsored" -->
+<!-- سكربت موحد ومصحح: لتغيير النطاق إلى العالمي + إضافة rel="sponsored" -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
-      // 1. تحديد النطاق المناسب بناءً على لغة المتصفح
-      const userLang = navigator.language || navigator.userLanguage;
-      let targetDomain = "www.shein.com"; // الافتراضي: النطاق الدولي (USD)
-
-      // إذا كانت لغة المتصفح عربية، استخدم النطاق العربي
-      if (userLang.startsWith("ar")) {
-        targetDomain = "ar.shein.com";
-      }
-
       const allLinks = document.querySelectorAll('a');
       
       allLinks.forEach(link => {
         // التأكد من أن الرابط يخص شي إن
         if (link.href.includes('shein.co.uk') || link.href.includes('shein.com') || link.href.includes('onelink.shein.com')) {
           
-          // 2. تغيير النطاق (إذا لم يكن رابط onelink خاص بالعمولة)
-          if (link.href.includes('shein.co.uk') || link.href.includes('shein.com')) {
-            link.href = link.href.replace(/https?:\/\/(www\.)?shein\.co\.uk/, `https://${targetDomain}`)
-                                 .replace(/https?:\/\/(www\.)?shein\.com/, `https://${targetDomain}`);
+          // إذا كان الرابط co.uk، قم بتحويله إلى com (المتجر العالمي)
+          // نظام شي إن سيتكفل بتوجيه الزائر لبلده وعرض العملة الصحيحة
+          if (link.href.includes('shein.co.uk')) {
+            link.href = link.href.replace(/https?:\/\/(www\.)?shein\.co\.uk/, 'https://www.shein.com');
           }
 
-          // 3. إضافة خصائص حماية السيو
+          // إضافة خصائص حماية السيو
           link.setAttribute('rel', 'sponsored nofollow noopener');
           link.setAttribute('target', '_blank');
         }
