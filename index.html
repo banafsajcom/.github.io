@@ -702,7 +702,7 @@ function renderProducts() {
           // إذا كان الرابط co.uk، قم بتحويله إلى com (المتجر العالمي)
           // نظام شي إن سيتكفل بتوجيه الزائر لبلده وعرض العملة الصحيحة
           if (link.href.includes('shein.co.uk')) {
-            link.href = link.href.replace(/https?:\/\/(www\.)?shein\.co\.uk/, 'https://www.shein.com');
+           link.href = link.href.replace(/https?:\/\/(www\.|m\.)?shein\.co\.uk/, 'https://www.shein.com');
           }
 
           // إضافة خصائص حماية السيو
