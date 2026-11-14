@@ -604,47 +604,49 @@
     let currentLang = 'ar';
 
     // 1. دالة العرض
-// 1. دالة العرض
 function renderProducts() {
   const grid = document.getElementById('productsGrid');
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  
-  let filtered = myProducts.filter(p => {
-    const name = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
-    return name.toLowerCase().includes(search);
-  });
-  
-  grid.innerHTML = filtered.map(p => {
-    let finalUrl = p.url;
-    if (!finalUrl.includes(AFFILIATE_TRACKING)) {
-        finalUrl = finalUrl + (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
-    }
-    
-    const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
-    const buyBtnText = currentLang === 'ar' ? 'اشتري من Shein' : 'Buy on Shein';
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
 
-    // هنا الكود الصحيح الذي يضمن بقاء الكروت بجانب بعضها
+  const filtered = myProducts.filter(p => {
+    const name = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
+    return (name || '').toLowerCase().includes(search);
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:2rem;">لا توجد منتجات مطابقة لبحثك</p>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    let finalUrl = p.url || p.affiliateUrl || '#';
+    if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
+      finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+    }
+
+    const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
+    const buyBtnText = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
+    const priceText = p.price > 0
+      ? '≈ $' + Number(p.price).toFixed(2)
+      : (currentLang === 'ar' ? 'السعر على Shein' : 'See price on Shein');
+
     return `
       <div class="product-card">
-        <img class="product-img" src="${p.image}" loading="lazy" onerror="this.src='https://placehold.co/250x250?text=Banafsaj'">
+        <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
         <div class="product-body">
           <div class="product-title">${displayName}</div>
-          
-          <div class="product-footer" style="flex-direction: column; align-items: stretch; gap: 10px; margin-top: auto;">
-            <div class="product-price" style="text-align: center; font-size: 1.1rem;">$${p.price.toFixed(2)}</div>
-            
-            <!-- رابط السيو مع rel="sponsored" -->
-            <a href="${finalUrl}" target="_blank" rel="sponsored noopener noreferrer" class="btn-add" style="text-decoration:none; text-align:center; width: 100%; display: block; box-sizing: border-box; padding: 0.6rem; border-radius: 50px; font-weight: bold;">
+          <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
+            <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
+            <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add"
+               style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">
               ${buyBtnText}
             </a>
           </div>
-          
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
-
     // 2. تبديل اللغة
     function toggleLang() {
       currentLang = currentLang === 'ar' ? 'en' : 'ar';
