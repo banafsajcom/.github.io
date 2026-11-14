@@ -649,29 +649,19 @@ function renderProducts() {
 }
     // 2. تبديل اللغة
     function toggleLang() {
-      currentLang = currentLang === 'ar' ? 'en' : 'ar';
-      const html = document.documentElement;
-      const langBtn = document.getElementById('langBtn');
-      
-      if (currentLang === 'en') {
-        html.setAttribute('lang', 'en'); html.setAttribute('dir', 'ltr');
-        langBtn.textContent = 'العربية';
-        document.querySelector('.logo').innerHTML = '💜 Shein Products Guide | Banafsaj';
-        document.querySelector('.hero h1').textContent = 'We curate the best Shein products';
-        document.querySelector('.hero p').textContent = 'Browse our selected collection and buy directly from Shein.';
-        document.getElementById('searchInput').placeholder = 'Search for a product...';
-        document.querySelector('footer p').textContent = 'All Rights Reserved © 2026 — Banafsaj Guide';
-      } else {
-        html.setAttribute('lang', 'ar'); html.setAttribute('dir', 'rtl');
-        langBtn.textContent = 'English';
-        document.querySelector('.logo').innerHTML = '💜 دليل منتجات Shein | بنفسج';
-        document.querySelector('.hero h1').textContent = 'نعرض لك أفضل منتجات Shein';
-        document.querySelector('.hero p').textContent = 'تصفح مجموعتنا المختارة من الأزياء والإلكترونيات والإكسسوارات، واشترِ مباشرة من Shein.';
-        document.getElementById('searchInput').placeholder = 'ابحث عن منتج...';
-        document.querySelector('footer p').textContent = 'جميع الحقوق محفوظة © 2026 — دليل منتجات بنفسج';
-      }
-      renderProducts();
-    }
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+  const isAr = currentLang === 'ar';
+  const html = document.documentElement;
+  html.setAttribute('lang', isAr ? 'ar' : 'en');
+  html.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+  document.getElementById('langBtn').textContent = isAr ? 'English' : 'العربية';
+  document.getElementById('searchInput').placeholder =
+    isAr ? 'ابحث عن منتج...' : 'Search for a product...';
+  document.querySelectorAll('[data-ar]').forEach(el => {
+    el.innerHTML = isAr ? el.dataset.ar : el.dataset.en;
+  });
+  renderProducts();
+}
 
     document.addEventListener('DOMContentLoaded', renderProducts);
   </script>
