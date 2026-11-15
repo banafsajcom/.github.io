@@ -632,6 +632,25 @@ html[lang="ar"] .lang-en { display: none; }
 {"id":400,"name_ar":"Cute Cartoon Girl Doodle Stickers","price":2.08,"image":"https://img.ltwebstatic.com/v4/j/spmp/2026/08/31/45/1788148457ab30674066f7f3efe8e59b797c42bfde_thumbnail_405x552.jpg","url":"https://www.shein.co.uk/Cute-Cartoon-Girl-Doodle-Stickers-p-562311620.html"}
       // ... (آخر منتج رقم 400)
    ];
+    // --- سكربت التنظيف الآلي (فلترة المنتجات المكسورة) ---
+let cleanedProducts = myProducts.filter(product => {
+    const isUKOnly = /UK-(Local|Warehouse)|From-UK/i.test(product.url);
+    if (isUKOnly) return false;
+    const badIds = [54706672, 45]; 
+    if (badIds.includes(product.id)) return false;
+    if (product.price < 15 && product.id > 10) return false;
+    const bigBrands = ["Nike", "Adidas", "Puma", "Gucci", "D&G", "Bulgari", "Guerlain", "Valentino", "New Balance", "Hoka", "Timberland"];
+    const isBigBrand = bigBrands.some(brand => product.name_ar.includes(brand));
+    if (isBigBrand) return false;
+    return true; 
+}).map(product => {
+    product.image = product.image.replace('http://', 'https://');
+    if (/^[A-Za-z]/.test(product.name_ar)) {
+        product.name_ar = "منتج مميز: " + product.name_ar; 
+    }
+    return product;
+});
+// ----------------------------------------------------
 
    let products = [];
     let currentLang = 'ar';
