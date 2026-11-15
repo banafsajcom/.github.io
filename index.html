@@ -659,10 +659,13 @@ function renderProducts() {
 
     const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
     const buyBtnText = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
-    const priceText = p.price > 0
-      ? '≈ £' + Number(p.price).toFixed(2)
-      : (currentLang === 'ar' ? 'السعر على Shein' : 'See price on Shein');
-
+    const v = Number(p.price) || 0;
+    const bandsAr = ['أقل من $10', '$10 – $25', '$25 – $50', '$50 – $100', 'أكثر من $100'];
+    const bandsEn = ['Under $10', '$10 – $25', '$25 – $50', '$50 – $100', 'Over $100'];
+    const bi = v < 10 ? 0 : v < 25 ? 1 : v < 50 ? 2 : v < 100 ? 3 : 4;
+    const priceText = v > 0
+      ? '≈ ' + (currentLang === 'ar' ? bandsAr[bi] : bandsEn[bi])
+      : (currentLang === 'ar' ? 'شاهد السعر على Shein' : 'See price on Shein');
     return `
       <div class="product-card">
         <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy"
