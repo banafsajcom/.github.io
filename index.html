@@ -632,24 +632,44 @@ let myProducts = [
 {"id":400,"name_ar":"Cute Cartoon Girl Doodle Stickers","price":2.08,"image":"https://img.ltwebstatic.com/v4/j/spmp/2026/08/31/45/1788148457ab30674066f7f3efe8e59b797c42bfde_thumbnail_405x552.jpg","url":"https://www.shein.co.uk/Cute-Cartoon-Girl-Doodle-Stickers-p-562311620.html"}
       // ... (آخر منتج رقم 400)
    ];
-    // --- سكربت التنظيف الآلي (فلترة المنتجات المكسورة) ---
+// --- سكربت التنظيف الآلي (نسخة 2: حذف المنتجات الضخمة والمكسورة) ---
 let cleanedProducts = myProducts.filter(product => {
+    // 1. حذف منتجات المستودع البريطاني
     const isUKOnly = /UK-(Local|Warehouse)|From-UK/i.test(product.url);
     if (isUKOnly) return false;
+
+    // 2. حذف المنتجات المشكوك فيها أو المكررة
     const badIds = [54706672, 45]; 
     if (badIds.includes(product.id)) return false;
+
+    // 3. حذف المنتجات الضخمة (أثاث، صوبات، أدوات، أجهزة رياضية) التي لا تشحن للخارج
+    // نبحث عن كلمات مفتاحية في اسم المنتج أو الرابط
+    const bulkyKeywords = /greenhouse|صوبة|furniture|sofa|chair|table|bed|desk|cabinet|shelf|أثاث|كرسي|طاولة|سرير|خزانة|رف|مكتب|kettlebell|dumbbell|دمبل|gazebo|tent|خيمة/i;
+    if (bulkyKeywords.test(product.name_ar) || bulkyKeywords.test(product.url)) return false;
+
+    // 4. تحديد عدد الحافظات (المنتجات الرخيصة): نأخذ أول 10 فقط
     if (product.price < 15 && product.id > 10) return false;
+
+    // 5. تصفية الماركات الكبرى (لتجنب OOPS)
     const bigBrands = ["Nike", "Adidas", "Puma", "Gucci", "D&G", "Bulgari", "Guerlain", "Valentino", "New Balance", "Hoka", "Timberland"];
     const isBigBrand = bigBrands.some(brand => product.name_ar.includes(brand));
     if (isBigBrand) return false;
-    return true; 
+
+    return true; // احتفظ بالمنتج
 }).map(product => {
+    // 6. إصلاح الصور من http إلى https
     product.image = product.image.replace('http://', 'https://');
+    
+    // 7. إضافة بادئة عربية للمنتجات الإنجليزية
     if (/^[A-Za-z]/.test(product.name_ar)) {
         product.name_ar = "منتج مميز: " + product.name_ar; 
     }
+
     return product;
 });
+
+// استبدال المصفوفة القديمة بالمصفوفة النظيفة
+myProducts = cleanedProducts; 
 // ----------------------------------------------------
 
    let products = [];
