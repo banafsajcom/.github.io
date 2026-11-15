@@ -660,7 +660,7 @@ function renderProducts() {
     const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
     const buyBtnText = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
     const priceText = p.price > 0
-      ? '≈ $' + Number(p.price).toFixed(2)
+      ? '≈ £' + Number(p.price).toFixed(2)
       : (currentLang === 'ar' ? 'السعر على Shein' : 'See price on Shein');
 
     return `
