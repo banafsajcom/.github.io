@@ -373,7 +373,7 @@ function renderProducts() {
     const buyBtnText = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
    const ar = currentLang === 'ar';
     const v = Number(p.price) || 0;
-    const sym = p.id >= 1000 ? '£' : '$';
+    const sym ='$';
     const note = ar ? 'السعر الحقيقي على الموقع الرسمي (Shein)'
                     : 'Actual price on the official Shein site';
     const priceText = v > 0
