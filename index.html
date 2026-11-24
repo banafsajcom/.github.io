@@ -476,79 +476,77 @@ let currentLang = 'ar';
   };
 
   function renderProducts() {
-    const grid = document.getElementById('productsGrid');
-    const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+  const grid = document.getElementById('productsGrid');
+  const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
 
-    const filtered = myProducts.filter(p => {
-      const nameAr = (p.name_ar || '').toLowerCase();
-      const nameEn = (p.name_en || '').toLowerCase();
-      return nameAr.includes(search) || nameEn.includes(search);
-    });
+  const filtered = myProducts.filter(p => {
+    const nameAr = (p.name_ar || '').toLowerCase();
+    const nameEn = (p.name_en || '').toLowerCase();
+    return nameAr.includes(search) || nameEn.includes(search);
+  });
 
-    if (filtered.length === 0) {
-      grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:2rem;font-size:1.1rem;">
-        ${currentLang === 'ar' ? 'لا توجد منتجات مطابقة لبحثك' : 'No matching products found'}
-      </p>`;
-      return;
-    }
-
-    // تجميع حسب القسم
-    const grouped = {};
-    filtered.forEach(p => {
-      const cat = getCategory(p);
-      if (!grouped[cat]) grouped[cat] = [];
-      grouped[cat].push(p);
-    });
-
-    let html = '';
-
-    categoryOrder.forEach(cat => {
-      if (!grouped[cat] || grouped[cat].length === 0) return;
-
-      const title = currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en;
-      
-      html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">
-        ${title}
-      </h2>`;
-
-      grouped[cat].forEach(p => {
-        let finalUrl = p.url || p.affiliateUrl || '#';
-        if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
-          finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
-        }
-
-        const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
-        const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
-        const ar = currentLang === 'ar';
-        const v = Number(p.price) || 0;
-        const note = ar ? 'السعر الحقيقي على الموقع الرسمي (Shein)' : 'Actual price on the official Shein site';
-        
-        const priceText = v > 0
-          ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi><small style="display:block;font-weight:400;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>`
-          : (ar ? 'شاهد السعر على Shein' : 'See price on Shein');
-
-// ← هذا السطر هو الأهم (الصورة)
-        html += `
-          <div class="product-card">
-            <img class="product-img" src="\( {p.image}" alt=" \){displayName}" loading="lazy"
-                 onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
-            <div class="product-body">
-              <div class="product-title">${displayName}</div>
-              <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
-                <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
-                <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add"
-                   style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">
-                  ${buyBtnText}
-                </a>
-              </div>
-            </div>
-          </div>`;
-      });
-    });
-
-    grid.innerHTML = html;
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:2rem;">
+      ${currentLang === 'ar' ? 'لا توجد منتجات مطابقة لبحثك' : 'No matching products found'}
+    </p>`;
+    return;
   }
 
+  // تجميع حسب القسم
+  const grouped = {};
+  filtered.forEach(p => {
+    const cat = getCategory(p);
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(p);
+  });
+
+  let html = '';
+
+  categoryOrder.forEach(cat => {
+    if (!grouped[cat] || grouped[cat].length === 0) return;
+
+    const title = currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en;
+
+    html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">
+      ${title}
+    </h2>`;
+
+    grouped[cat].forEach(p => {
+      let finalUrl = p.url || p.affiliateUrl || '#';
+      if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
+        finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+      }
+
+      const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
+      const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
+      const ar = currentLang === 'ar';
+      const v = Number(p.price) || 0;
+      const note = ar ? 'السعر الحقيقي على الموقع الرسمي (Shein)' : 'Actual price on the official Shein site';
+
+      const priceText = v > 0
+        ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi><small style="display:block;font-weight:400;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>`
+        : (ar ? 'شاهد السعر على Shein' : 'See price on Shein');
+
+      html += `
+        <div class="product-card">
+          <img class="product-img" src="\( {p.image}" alt=" \){displayName}" loading="lazy"
+               onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
+          <div class="product-body">
+            <div class="product-title">${displayName}</div>
+            <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
+              <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
+              <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add"
+                 style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">
+                ${buyBtnText}
+              </a>
+            </div>
+          </div>
+        </div>`;
+    });
+  });
+
+  grid.innerHTML = html;
+}
   function toggleLang() {
     currentLang = currentLang === 'ar' ? 'en' : 'ar';
     const isAr = currentLang === 'ar';
