@@ -432,30 +432,71 @@ const myProducts = [
    
 let currentLang = 'ar';
 
-  // تحديد القسم تلقائياً
-  function getCategory(p) {
-    const text = ((p.name_ar || '') + ' ' + (p.name_en || '')).toLowerCase();
+ // تصحيح يدوي لأي منتج بالـ id (الاسم الأيسر = id، والأيمن = القسم)
+const categoryOverrides = {
+  28616287: 'sets',     // Blazer And Pants Suit
+  207615825: 'sets',    // Blazer + Jeans 2 Pieces Set
+  900000289: 'tops',    // بلوزة فقط وليست طقماً
+  // 900000069: 'jewelry',
+  // 900000074: 'jewelry',
+};
 
-    if (text.includes('زفاف') || text.includes('wedding') || text.includes('bridal')) return 'wedding';
-    if (text.includes('معطف') || text.includes('overcoat') || text.includes('coat') || text.includes('فرو') || text.includes('fur')) return 'coats';
-    if (text.includes('جاكيت') || text.includes('بليزر') || text.includes('blazer') || text.includes('jacket') || text.includes('puffer')) return 'jackets';
-    if (text.includes('بوت') || text.includes('حذاء') || text.includes('boot') || text.includes('heel') || text.includes('shoes')) return 'shoes';
-    if (text.includes('حقيبة') || text.includes('bag') || text.includes('clutch') || text.includes('handbag') || text.includes('backpack')) return 'bags';
-    if (text.includes('خاتم') || text.includes('عقد') || text.includes('أقراط') || text.includes('قلادة') || text.includes('مجوهرات') || 
-        text.includes('ring') || text.includes('necklace') || text.includes('earring') || text.includes('jewelry') || 
-        text.includes('moissanite') || text.includes('zirconia')) return 'jewelry';
-    if (text.includes('ساعة') || text.includes('watch')) return 'watches';
-    if (text.includes('طقم') || text.includes('set') || text.includes('suit') || text.includes('2pcs') || text.includes('2 pieces') || text.includes('two piece')) return 'sets';
-    if (text.includes('تنورة') || text.includes('skirt')) return 'skirts';
-    if (text.includes('جمبسوت') || text.includes('jumpsuit')) return 'jumpsuits';
-    if (text.includes('بلوزة') || text.includes('سويتر') || text.includes('كارديجان') || text.includes('توب') || 
-        text.includes('sweater') || text.includes('cardigan') || text.includes('blouse') || text.includes('top')) return 'tops';
-    if (text.includes('فستان') || text.includes('dress') || text.includes('gown') || text.includes('robe') || 
-        text.includes('عباية') || text.includes('قفطان') || text.includes('kaftan') || text.includes('abaya')) return 'dresses';
-    
-    return 'other';
+const arRules = [
+  ['shoes',     ['بوت', 'حذاء', 'أحذية', 'صندل', 'جزمة']],
+  ['bags',      ['حقيبة', 'حقائب', 'شنطة']],
+  ['coats',     ['معطف', 'بالطو']],
+  ['jackets',   ['جاكيت', 'بليزر']],
+  ['sets',      ['طقم', 'بدلة']],
+  ['jewelry',   ['مجوهرات', 'خاتم', 'عقد', 'أقراط', 'اقراط', 'قلادة', 'سوار']],
+  ['watches',   ['ساعة']],
+  ['dresses',   ['فستان', 'عباية', 'قفطان', 'روب']],
+  ['skirts',    ['تنورة']],
+  ['jumpsuits', ['جمبسوت']],
+  ['tops',      ['بلوزة', 'سويتر', 'سويت شيرت', 'كارديجان', 'توب', 'قميص']]
+];
+
+const enRules = [
+  ['wedding',   /\b(wedding dress|bridal gown)\b/],
+  ['shoes',     /\b(boots?|heels?|sandals?|shoes?|pumps|sneakers?)\b/],
+  ['bags',      /\b(bags?|handbag|clutch|backpack)\b/],
+  ['watches',   /\bwatch(es)?\b/],
+  ['jewelry',   /\b(rings?|necklaces?|earrings?|bracelets?|jewelry|moissanite|zirconia|pendant)\b/],
+  ['coats',     /\b(overcoat|coat)\b/],
+  ['jackets',   /\b(jackets?|blazer|puffer)\b/],
+  ['jumpsuits', /\bjumpsuit\b/],
+  ['skirts',    /\bskirt\b/],
+  ['sets',      /\b(set|suit|2pcs|2 pieces|two pieces?)\b/],
+  ['dresses',   /\b(dress|gown|abaya|kaftan|robe)\b/],
+  ['tops',      /\b(sweater|cardigan|blouse|top|sweatshirt|shirt)\b/]
+];
+
+function getCategory(p) {
+  if (categoryOverrides[p.id]) return categoryOverrides[p.id];
+
+  const ar = (p.name_ar || '').trim();
+  const en = (p.name_en || '').toLowerCase();
+
+  // فساتين الزفاف فقط (وليس صندل زفاف أو مجوهرات عروس)
+  if (ar.includes('فستان زفاف') || ar.includes('فساتين زفاف')) return 'wedding';
+
+  // أطقم المجوهرات تذهب للمجوهرات
+  if (/طقم\s+(مجوهرات|عقد|أقراط|اقراط|خاتم|قلادة|سوار)/.test(ar)) return 'jewelry';
+
+  // أول كلمة نوع تظهر في الاسم العربي هي نوع المنتج
+  let best = null, bestIdx = Infinity;
+  for (const [cat, words] of arRules) {
+    for (const w of words) {
+      const i = ar.indexOf(w);
+      if (i !== -1 && i < bestIdx) { bestIdx = i; best = cat; }
+    }
   }
+  if (best) return best;
 
+  // احتياطي: الإنجليزي بكلمات كاملة
+  for (const [cat, re] of enRules) if (re.test(en)) return cat;
+
+  return 'other';
+}
   const categoryOrder = ['wedding', 'dresses', 'coats', 'jackets', 'sets', 'tops', 'skirts', 'jumpsuits', 'shoes', 'bags', 'jewelry', 'watches', 'other'];
   
   const categoryNames = {
