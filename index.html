@@ -431,98 +431,153 @@ const myProducts = [
 ];
 
    
-// --- سكربت التنظيف الآلي (نسخة 2: حذف المنتجات الضخمة والمكسورة) ---
+ let currentLang = 'ar';
 
-// ----------------------------------------------------
+  // دالة تحديد القسم تلقائياً حسب اسم المنتج
+  function getCategory(p) {
+    const text = ((p.name_ar || '') + ' ' + (p.name_en || '')).toLowerCase();
 
-   let products = [];
-    let currentLang = 'ar';
-
-    // 1. دالة العرض
-function renderProducts() {
-  const grid = document.getElementById('productsGrid');
-  const search = document.getElementById('searchInput').value.toLowerCase().trim();
-
-  const filtered = myProducts.filter(p => {
-    const name = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
-    return (name || '').toLowerCase().includes(search);
-  });
-
-  if (filtered.length === 0) {
-    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:2rem;">لا توجد منتجات مطابقة لبحثك</p>';
-    return;
+    if (text.includes('زفاف') || text.includes('wedding') || text.includes('bridal')) return 'wedding';
+    if (text.includes('معطف') || text.includes('overcoat') || text.includes('coat') || text.includes('فرو') || text.includes('fur coat')) return 'coats';
+    if (text.includes('جاكيت') || text.includes('بليزر') || text.includes('blazer') || text.includes('jacket') || text.includes('puffer')) return 'jackets';
+    if (text.includes('بوت') || text.includes('حذاء') || text.includes('boot') || text.includes('heel') || text.includes('shoes')) return 'shoes';
+    if (text.includes('حقيبة') || text.includes('bag') || text.includes('clutch') || text.includes('handbag') || text.includes('backpack')) return 'bags';
+    if (text.includes('خاتم') || text.includes('عقد') || text.includes('أقراط') || text.includes('قلادة') || text.includes('مجوهرات') || text.includes('ring') || text.includes('necklace') || text.includes('earring') || text.includes('jewelry') || text.includes('moissanite') || text.includes('zirconia')) return 'jewelry';
+    if (text.includes('ساعة') || text.includes('watch')) return 'watches';
+    if (text.includes('طقم') || text.includes('set') || text.includes('suit') || text.includes('2pcs') || text.includes('2 pieces') || text.includes('two piece')) return 'sets';
+    if (text.includes('تنورة') || text.includes('skirt')) return 'skirts';
+    if (text.includes('جمبسوت') || text.includes('jumpsuit')) return 'jumpsuits';
+    if (text.includes('بلوزة') || text.includes('سويتر') || text.includes('كارديجان') || text.includes('توب') || text.includes('sweater') || text.includes('cardigan') || text.includes('blouse') || text.includes('top')) return 'tops';
+    if (text.includes('فستان') || text.includes('dress') || text.includes('gown') || text.includes('robe') || text.includes('عباية') || text.includes('قفطان') || text.includes('kaftan') || text.includes('abaya')) return 'dresses';
+    
+    return 'other';
   }
 
-  grid.innerHTML = filtered.map(p => {
-    let finalUrl = p.url || p.affiliateUrl || '#';
-    if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
-      finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+  // ترتيب الأقسام + أسماؤها بالعربي والإنجليزي
+  const categoryOrder = ['wedding', 'dresses', 'coats', 'jackets', 'sets', 'tops', 'skirts', 'jumpsuits', 'shoes', 'bags', 'jewelry', 'watches', 'other'];
+  
+  const categoryNames = {
+    wedding:   { ar: 'فساتين الزفاف',           en: 'Wedding Dresses' },
+    dresses:   { ar: 'فساتين سهرة ومناسبات',    en: 'Evening & Formal Dresses' },
+    coats:     { ar: 'المعاطف الشتوية',         en: 'Winter Coats' },
+    jackets:   { ar: 'الجاكيتات والبليزرات',    en: 'Jackets & Blazers' },
+    sets:      { ar: 'الأطقم والبدلات',         en: 'Sets & Suits' },
+    tops:      { ar: 'البلوزات والتوبات',       en: 'Tops & Sweaters' },
+    skirts:    { ar: 'التنانير',                en: 'Skirts' },
+    jumpsuits: { ar: 'الجمبسوت',                en: 'Jumpsuits' },
+    shoes:     { ar: 'الأحذية والبوتات',        en: 'Shoes & Boots' },
+    bags:      { ar: 'الحقائب',                 en: 'Bags' },
+    jewelry:   { ar: 'المجوهرات',               en: 'Jewelry' },
+    watches:   { ar: 'الساعات',                 en: 'Watches' },
+    other:     { ar: 'منتجات أخرى',             en: 'Other Products' }
+  };
+
+  // ========== دالة العرض ==========
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    const search = document.getElementById('searchInput').value.toLowerCase().trim();
+
+    // البحث يعمل على العربي والإنجليزي معاً
+    const filtered = myProducts.filter(p => {
+      const nameAr = (p.name_ar || '').toLowerCase();
+      const nameEn = (p.name_en || '').toLowerCase();
+      return nameAr.includes(search) || nameEn.includes(search);
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:2rem;font-size:1.1rem;">
+        ${currentLang === 'ar' ? 'لا توجد منتجات مطابقة لبحثك' : 'No matching products found'}
+      </p>`;
+      return;
     }
 
-    const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
-    const buyBtnText = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
-   const ar = currentLang === 'ar';
-    const v = Number(p.price) || 0;
-    const sym ='$';
-    const note = ar ? 'السعر الحقيقي على الموقع الرسمي (Shein)'
-                    : 'Actual price on the official Shein site';
-    const priceText = v > 0
-      ? '≈ <bdi dir="ltr">' + sym + v.toFixed(2) + '</bdi>' +
-        '<small style="display:block;font-weight:400;font-size:.78rem;color:#4A3A52;margin-top:2px;">' + note + '</small>'
-      : (ar ? 'شاهد السعر على Shein' : 'See price on Shein');
-    return `
-      <div class="product-card">
-        <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy"
-             onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
-        <div class="product-body">
-          <div class="product-title">${displayName}</div>
-          <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
-            <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
-            <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add"
-               style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">
-              ${buyBtnText}
-            </a>
-          </div>
-        </div>
-      </div>`;
-  }).join('');
-}
-    // 2. تبديل اللغة
-    function toggleLang() {
-  currentLang = currentLang === 'ar' ? 'en' : 'ar';
-  const isAr = currentLang === 'ar';
-  const html = document.documentElement;
-  html.setAttribute('lang', isAr ? 'ar' : 'en');
-  html.setAttribute('dir', isAr ? 'rtl' : 'ltr');
-  document.getElementById('langBtn').textContent = isAr ? 'English' : 'العربية';
-  document.getElementById('searchInput').placeholder =
-    isAr ? 'ابحث عن منتج...' : 'Search for a product...';
-  document.querySelectorAll('[data-ar]').forEach(el => {
-    el.innerHTML = isAr ? el.dataset.ar : el.dataset.en;
-  });
-  renderProducts();
-}
+    // تجميع المنتجات حسب القسم
+    const grouped = {};
+    filtered.forEach(p => {
+      const cat = getCategory(p);
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(p);
+    });
 
-    document.addEventListener('DOMContentLoaded', renderProducts);
-  </script>
+    let html = '';
 
-<!-- سكربت موحد ومصحح: لتغيير النطاق إلى العالمي + إضافة rel="sponsored" -->
+    categoryOrder.forEach(cat => {
+      if (!grouped[cat] || grouped[cat].length === 0) return;
+
+      const title = currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en;
+      
+      html += `<h2 class="category-title" style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">
+        ${title}
+      </h2>`;
+
+      grouped[cat].forEach(p => {
+        let finalUrl = p.url || p.affiliateUrl || '#';
+        if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
+          finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+        }
+
+        const displayName = currentLang === 'ar' ? p.name_ar : (p.name_en || p.name_ar);
+        const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
+        const ar = currentLang === 'ar';
+        const v = Number(p.price) || 0;
+        const note = ar ? 'السعر الحقيقي على الموقع الرسمي (Shein)' : 'Actual price on the official Shein site';
+        
+        const priceText = v > 0
+          ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi>
+             <small style="display:block;font-weight:400;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>`
+          : (ar ? 'شاهد السعر على Shein' : 'See price on Shein');
+
+        html += `
+          <div class="product-card">
+            <img class="product-img" src="\( {p.image}" alt=" \){displayName}" loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
+            <div class="product-body">
+              <div class="product-title">${displayName}</div>
+              <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
+                <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
+                <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add"
+                   style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">
+                  ${buyBtnText}
+                </a>
+              </div>
+            </div>
+          </div>`;
+      });
+    });
+
+    grid.innerHTML = html;
+  }
+
+  // ========== تبديل اللغة ==========
+  function toggleLang() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    const isAr = currentLang === 'ar';
+    const html = document.documentElement;
+    html.setAttribute('lang', isAr ? 'ar' : 'en');
+    html.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+    document.getElementById('langBtn').textContent = isAr ? 'English' : 'العربية';
+    document.getElementById('searchInput').placeholder = isAr ? 'ابحث عن منتج...' : 'Search for a product...';
+    
+    document.querySelectorAll('[data-ar]').forEach(el => {
+      el.innerHTML = isAr ? el.dataset.ar : el.dataset.en;
+    });
+    
+    renderProducts();
+  }
+
+  document.addEventListener('DOMContentLoaded', renderProducts);
+</script>
+
+<!-- سكربت تحويل الروابط (يبقى كما هو) -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
       const allLinks = document.querySelectorAll('a');
-      
       allLinks.forEach(link => {
-        // التأكد من أن الرابط يخص شي إن
         if (link.href.includes('shein.co.uk') || link.href.includes('shein.com') || link.href.includes('onelink.shein.com')) {
-          
-          // إذا كان الرابط co.uk، قم بتحويله إلى com (المتجر العالمي)
-          // نظام شي إن سيتكفل بتوجيه الزائر لبلده وعرض العملة الصحيحة
           if (link.href.includes('shein.co.uk')) {
-           link.href = link.href.replace(/https?:\/\/(www\.|m\.)?shein\.co\.uk/, 'https://www.shein.com');
+            link.href = link.href.replace(/https?:\/\/(www\.|m\.)?shein\.co\.uk/, 'https://www.shein.com');
           }
-
-          // إضافة خصائص حماية السيو
           link.setAttribute('rel', 'sponsored nofollow noopener');
           link.setAttribute('target', '_blank');
         }
@@ -530,5 +585,3 @@ function renderProducts() {
     }, 1000); 
   });
 </script>
-</body>
-</html>
