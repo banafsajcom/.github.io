@@ -43,6 +43,35 @@ html[lang="ar"] .lang-en { display: none; }
     .btn-checkout { width: 100%; padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
     footer { background: var(--primary-dark); color: #fff; text-align: center; padding: 2rem 1rem; margin-top: 3rem; }
     footer a { color: #C77DFF; text-decoration: none; font-weight: bold; }
+    /* 🟢 تنسيقات خاصة للهواتف المحمولة (لجعل المنتجات عمودين) */
+@media (max-width: 768px) {
+  .products-grid { 
+    grid-template-columns: repeat(2, 1fr) !important; /* تقسيم الشاشة لعمودين */
+    gap: 10px !important; /* تقليل المسافات بين المنتجات */
+    padding: 0 10px; /* مساحة جانبية بسيطة */
+  }
+  .product-img { 
+    height: 180px !important; /* تصغير ارتفاع الصورة لتناسب العمودين */
+  }
+  .product-body { 
+    padding: 0.6rem !important; /* تقليل الحواف الداخلية */
+  }
+  .product-title { 
+    font-size: 0.8rem !important; /* تصغير حجم الخط */
+    height: 2.6rem !important; /* تحديد ارتفاع ثابت للعنوان حتى لا تختلف أحجام الكروت */
+    margin-bottom: 0.3rem !important;
+  }
+  .product-price { 
+    font-size: 0.95rem !important; /* تصغير السعر */
+  }
+  .product-price small {
+    font-size: 0.6rem !important; /* تصغير الملاحظة تحت السعر */
+  }
+  .btn-add { 
+    padding: 0.4rem !important; /* تصغير زر الشراء */
+    font-size: 0.8rem !important;
+  }
+}
   </style>
 </head>
 <body>
