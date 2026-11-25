@@ -55,15 +55,15 @@ html[lang="ar"] .lang-en { display: none; }
     <div class="header-actions">
       <button class="btn-header" id="langBtn" onclick="toggleLang()">English</button>
     </div>
-    <!-- قائمة التنقل الذكية -->
+<!-- قائمة التنقل الذكية (تدعم اللغتين) -->
 <nav style="display:flex; gap:15px; flex-wrap:wrap; font-weight:bold; font-size:15px; margin: 10px 0 0 0; justify-content: center; width: 100%;">
-  <a href="index.html" style="color:#fff; text-decoration:none;">الكل</a>
-  <a href="?cat=wedding" style="color:#fff; text-decoration:none;">زفاف</a>
-  <a href="?cat=dresses" style="color:#fff; text-decoration:none;">فساتين</a>
-  <a href="?cat=coats" style="color:#fff; text-decoration:none;">معاطف</a>
-  <a href="?cat=shoes" style="color:#fff; text-decoration:none;">أحذية</a>
-  <a href="?cat=bags" style="color:#fff; text-decoration:none;">حقائب</a>
-  <a href="?cat=jewelry" style="color:#fff; text-decoration:none;">مجوهرات</a>
+  <a href="index.html" data-ar="الكل" data-en="All" style="color:#fff; text-decoration:none;">الكل</a>
+  <a href="?cat=wedding" data-ar="زفاف" data-en="Wedding" style="color:#fff; text-decoration:none;">زفاف</a>
+  <a href="?cat=dresses" data-ar="فساتين" data-en="Dresses" style="color:#fff; text-decoration:none;">فساتين</a>
+  <a href="?cat=coats" data-ar="معاطف" data-en="Coats" style="color:#fff; text-decoration:none;">معاطف</a>
+  <a href="?cat=shoes" data-ar="أحذية" data-en="Shoes" style="color:#fff; text-decoration:none;">أحذية</a>
+  <a href="?cat=bags" data-ar="حقائب" data-en="Bags" style="color:#fff; text-decoration:none;">حقائب</a>
+  <a href="?cat=jewelry" data-ar="مجوهرات" data-en="Jewelry" style="color:#fff; text-decoration:none;">مجوهرات</a>
 </nav>
   </div>
 </header>
@@ -562,11 +562,18 @@ function getCategory(p) {
 
   let html = '';
 
-  // إذا كان هناك قسم محدد، نعرض المنتجات فقط بدون عناوين أقسام
+  // إذا كان هناك قسم محدد، نعرض المنتجات مع عنوان القسم
   if (selectedCategory) {
     const catItems = grouped[selectedCategory] || [];
+    
+    // إظهار عنوان القسم باللغة الحالية
+    if(categoryNames[selectedCategory]) {
+      const title = currentLang === 'ar' ? categoryNames[selectedCategory].ar : categoryNames[selectedCategory].en;
+      html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">${title}</h2>`;
+    }
+
     catItems.forEach(p => {
-       // (كود كارت المنتج الخاص بك هنا)
+       // كود كارت المنتج
        let finalUrl = p.url || p.affiliateUrl || '#';
        if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
          finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
@@ -590,14 +597,14 @@ function getCategory(p) {
         </div>`;
     });
   } else {
-    // إذا لم يتم تحديد قسم (الصفحة الرئيسية)، نعرض جميع الأقسام (الطريقة القديمة)
+    // إذا لم يتم تحديد قسم (الصفحة الرئيسية)، نعرض جميع الأقسام
     categoryOrder.forEach(cat => {
       if (!grouped[cat] || grouped[cat].length === 0) return;
       const title = currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en;
       html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">${title}</h2>`;
 
       grouped[cat].forEach(p => {
-         // (نفس كود كارت المنتج الذي وضعناه بالأعلى)
+         // كود كارت المنتج (نفسه الموجود بالأعلى)
          let finalUrl = p.url || p.affiliateUrl || '#';
          if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) { finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING; }
          const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
