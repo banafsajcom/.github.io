@@ -55,6 +55,16 @@ html[lang="ar"] .lang-en { display: none; }
     <div class="header-actions">
       <button class="btn-header" id="langBtn" onclick="toggleLang()">English</button>
     </div>
+    <!-- قائمة التنقل الذكية -->
+<nav style="display:flex; gap:15px; flex-wrap:wrap; font-weight:bold; font-size:15px; margin: 10px 0 0 0; justify-content: center; width: 100%;">
+  <a href="index.html" style="color:#fff; text-decoration:none;">الكل</a>
+  <a href="?cat=wedding" style="color:#fff; text-decoration:none;">زفاف</a>
+  <a href="?cat=dresses" style="color:#fff; text-decoration:none;">فساتين</a>
+  <a href="?cat=coats" style="color:#fff; text-decoration:none;">معاطف</a>
+  <a href="?cat=shoes" style="color:#fff; text-decoration:none;">أحذية</a>
+  <a href="?cat=bags" style="color:#fff; text-decoration:none;">حقائب</a>
+  <a href="?cat=jewelry" style="color:#fff; text-decoration:none;">مجوهرات</a>
+</nav>
   </div>
 </header>
 
@@ -515,24 +525,34 @@ function getCategory(p) {
     other:     { ar: 'منتجات أخرى',             en: 'Other Products' }
   };
 
-  function renderProducts() {
+ function renderProducts() {
   const grid = document.getElementById('productsGrid');
   const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
 
-  const filtered = myProducts.filter(p => {
+  // قراءة القسم المطلوب من الرابط (إذا وجد)
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedCategory = urlParams.get('cat'); 
+
+  // فلترة المنتجات حسب البحث
+  let filtered = myProducts.filter(p => {
     const nameAr = (p.name_ar || '').toLowerCase();
     const nameEn = (p.name_en || '').toLowerCase();
     return nameAr.includes(search) || nameEn.includes(search);
   });
 
+  // إذا كان هناك قسم محدد في الرابط، نقوم بفلترة المنتجات لهذا القسم فقط
+  if (selectedCategory) {
+    filtered = filtered.filter(p => getCategory(p) === selectedCategory);
+  }
+
   if (filtered.length === 0) {
     grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:2rem;">
-      ${currentLang === 'ar' ? 'لا توجد منتجات مطابقة لبحثك' : 'No matching products found'}
+      ${currentLang === 'ar' ? 'لا توجد منتجات مطابقة' : 'No matching products found'}
     </p>`;
     return;
   }
 
-  // تجميع حسب القسم
+  // تجميع المنتجات حسب القسم
   const grouped = {};
   filtered.forEach(p => {
     const cat = getCategory(p);
@@ -542,49 +562,64 @@ function getCategory(p) {
 
   let html = '';
 
-  categoryOrder.forEach(cat => {
-    if (!grouped[cat] || grouped[cat].length === 0) return;
+  // إذا كان هناك قسم محدد، نعرض المنتجات فقط بدون عناوين أقسام
+  if (selectedCategory) {
+    const catItems = grouped[selectedCategory] || [];
+    catItems.forEach(p => {
+       // (كود كارت المنتج الخاص بك هنا)
+       let finalUrl = p.url || p.affiliateUrl || '#';
+       if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
+         finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+       }
+       const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
+       const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
+       const v = Number(p.price) || 0;
+       const note = currentLang === 'ar' ? 'السعر الحقيقي على الموقع الرسمي' : 'Actual price on official site';
+       const priceText = v > 0 ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi><small style="display:block;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>` : '';
 
-    const title = currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en;
-
-    html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">
-      ${title}
-    </h2>`;
-
-    grouped[cat].forEach(p => {
-      let finalUrl = p.url || p.affiliateUrl || '#';
-      if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
-        finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
-      }
-
-      const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
-      const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
-      const ar = currentLang === 'ar';
-      const v = Number(p.price) || 0;
-      const note = ar ? 'السعر الحقيقي على الموقع الرسمي (Shein)' : 'Actual price on the official Shein site';
-
-      const priceText = v > 0
-        ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi><small style="display:block;font-weight:400;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>`
-        : (ar ? 'شاهد السعر على Shein' : 'See price on Shein');
-
-html += `
-  <div class="product-card">
-    <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy"
-         onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
-    <div class="product-body">
-      <div class="product-title">${displayName}</div>
-      <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
-        <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
-        <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add"
-           style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">
-          ${buyBtnText}
-        </a>
-      </div>
-    </div>
-  </div>`;
+       html += `
+        <div class="product-card">
+          <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
+          <div class="product-body">
+            <div class="product-title">${displayName}</div>
+            <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
+              <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
+              <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add" style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">${buyBtnText}</a>
+            </div>
+          </div>
+        </div>`;
     });
-  });
+  } else {
+    // إذا لم يتم تحديد قسم (الصفحة الرئيسية)، نعرض جميع الأقسام (الطريقة القديمة)
+    categoryOrder.forEach(cat => {
+      if (!grouped[cat] || grouped[cat].length === 0) return;
+      const title = currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en;
+      html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">${title}</h2>`;
 
+      grouped[cat].forEach(p => {
+         // (نفس كود كارت المنتج الذي وضعناه بالأعلى)
+         let finalUrl = p.url || p.affiliateUrl || '#';
+         if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) { finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING; }
+         const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
+         const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
+         const v = Number(p.price) || 0;
+         const note = currentLang === 'ar' ? 'السعر الحقيقي على الموقع الرسمي' : 'Actual price on official site';
+         const priceText = v > 0 ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi><small style="display:block;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>` : '';
+
+         html += `
+          <div class="product-card">
+            <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
+            <div class="product-body">
+              <div class="product-title">${displayName}</div>
+              <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
+                <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
+                <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add" style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">${buyBtnText}</a>
+              </div>
+            </div>
+          </div>`;
+      });
+    });
+  }
   grid.innerHTML = html;
 }
   function toggleLang() {
