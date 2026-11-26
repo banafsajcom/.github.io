@@ -711,8 +711,31 @@ function getCategory(p) {
   }
   grid.innerHTML = html;
 }
-  function toggleLang() {
-    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+ function toggleLang() {
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+  const isAr = currentLang === 'ar';
+  
+  // 👇 هذا السطر الجديد يحفظ اللغة في ذاكرة المتصفح 👇
+  localStorage.setItem('banafsaj_lang', currentLang); 
+  
+  document.documentElement.setAttribute('lang', isAr ? 'ar' : 'en');
+  document.documentElement.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+  document.getElementById('langBtn').textContent = isAr ? 'English' : 'العربية';
+  document.getElementById('searchInput').placeholder = isAr ? 'ابحث عن منتج...' : 'Search for a product...';
+  
+  document.querySelectorAll('[data-ar]').forEach(el => {
+    el.innerHTML = isAr ? el.dataset.ar : el.dataset.en;
+  });
+  
+  renderProducts();
+}
+
+// 👇 هذا هو الكود الجديد الذي يقرأ اللغة المحفوظة عند تحميل الصفحة 👇
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem('banafsaj_lang');
+  
+  if (savedLang && savedLang !== currentLang) {
+    currentLang = savedLang;
     const isAr = currentLang === 'ar';
     document.documentElement.setAttribute('lang', isAr ? 'ar' : 'en');
     document.documentElement.setAttribute('dir', isAr ? 'rtl' : 'ltr');
@@ -722,9 +745,11 @@ function getCategory(p) {
     document.querySelectorAll('[data-ar]').forEach(el => {
       el.innerHTML = isAr ? el.dataset.ar : el.dataset.en;
     });
-    
-    renderProducts();
   }
+
+  // عرض المنتجات بعد التأكد من اللغة
+  renderProducts();
+});
 
   document.addEventListener('DOMContentLoaded', renderProducts);
 </script>
