@@ -72,6 +72,32 @@ html[lang="ar"] .lang-en { display: none; }
     font-size: 0.8rem !important;
   }
 }
+    /* تنسيق القائمة العلوية كمربعات أنيقة */
+.nav-menu {
+  display: flex;
+  gap: 12px; /* المسافة بين المربعات */
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  margin-top: 15px;
+  padding-bottom: 5px;
+}
+.nav-menu a {
+  color: #fff;
+  text-decoration: none;
+  padding: 6px 18px; /* الحشوة الداخلية (الطول والعرض) */
+  background: rgba(255, 255, 255, 0.15); /* لون خلفية شفاف */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* إطار خفيف */
+  border-radius: 50px; /* جعل الحواف دائرية (شكل كبسولة) */
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.3s ease; /* حركة ناعمة عند التمرير */
+}
+/* تأثير عند تمرير الماوس فوق المربع (على الكمبيوتر) */
+.nav-menu a:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px); /* يرتفع قليلاً */
+}
   </style>
 </head>
 <body>
