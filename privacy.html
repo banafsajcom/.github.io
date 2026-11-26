@@ -3,166 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>سياسة الخصوصية | Banafsajcom.com</title>
-  <meta name="description" content="سياسة الخصوصية لموقع Banafsajcom.com - واجهة عرض لا تجمع بيانات شخصية." />
+  <title>سياسة الخصوصية | Banafsaj</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root { --primary: #6B2D7B; --primary-dark: #4A1C55; --bg: #F8F5FA; --card: #FFF; --text: #2D1B36; --border: #E8DFF0; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-      background: #faf7f5;
-      color: #2c2c2c;
-      line-height: 1.8;
-    }
-    .container {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 40px 20px 80px;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    header a {
-      color: #8b5e4b;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    h1 {
-      font-size: 2rem;
-      color: #5c3a2e;
-      margin: 16px 0 8px;
-    }
-    .subtitle {
-      color: #777;
-      font-size: 1.05rem;
-    }
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 32px 28px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      margin-bottom: 24px;
-    }
-    h2 {
-      font-size: 1.2rem;
-      color: #5c3a2e;
-      margin-bottom: 12px;
-      border-right: 4px solid #c9a48a;
-      padding-right: 12px;
-    }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+    header { background: var(--primary-dark); color: #fff; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    header a { color: #fff; text-decoration: none; font-weight: bold; font-size: 0.95rem; }
+    .btn-lang { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 0.4rem 1rem; border-radius: 50px; cursor: pointer; font-family: inherit; font-weight: bold; }
+    .container { max-width: 820px; margin: 40px auto; padding: 0 20px 80px; }
+    h1 { font-size: 2rem; color: var(--primary); text-align: center; margin-bottom: 10px; }
+    .subtitle { color: #777; text-align: center; margin-bottom: 40px; }
+    .card { background: var(--card); border-radius: 16px; padding: 32px 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px; border: 1px solid var(--border); }
+    h2 { font-size: 1.2rem; color: var(--primary-dark); margin-bottom: 12px; border-right: 4px solid var(--primary); padding-right: 12px; }
+    html[dir="ltr"] h2 { border-right: none; border-left: 4px solid var(--primary); padding-right: 0; padding-left: 12px; }
     p { margin-bottom: 14px; color: #444; }
-    ul {
-      padding-right: 22px;
-      margin-bottom: 14px;
-      color: #444;
-    }
+    ul { padding-right: 22px; margin-bottom: 14px; color: #444; }
+    html[dir="ltr"] ul { padding-right: 0; padding-left: 22px; }
     li { margin-bottom: 8px; }
-    .note {
-      background: #f8f0eb;
-      border-radius: 12px;
-      padding: 16px 18px;
-      margin: 16px 0;
-      font-size: 0.95rem;
-    }
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      color: #999;
-      font-size: 0.9rem;
-    }
-    footer a { color: #8b5e4b; }
-    @media (max-width: 600px) {
-      h1 { font-size: 1.55rem; }
-      .card { padding: 24px 18px; }
-    }
+    .note { background: #f3e5f5; border-radius: 12px; padding: 16px 18px; margin: 16px 0; font-size: 0.95rem; border: 1px solid #E8DFF0; }
+    @media (max-width: 600px) { h1 { font-size: 1.55rem; } .card { padding: 24px 18px; } }
   </style>
 </head>
 <body>
+  <header>
+    <a href="index.html" data-ar="← العودة للمتجر" data-en="← Back to Store">← العودة للمتجر</a>
+    <button class="btn-lang" id="langBtn" onclick="toggleLang()">English</button>
+  </header>
+
   <div class="container">
-    <header>
-      <a href="index.html">← العودة للمتجر</a>
-      <h1>سياسة الخصوصية</h1>
-      <p class="subtitle">آخر تحديث: نوفمبر 2026</p>
-    </header>
+    <h1 data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</h1>
+    <p class="subtitle" data-ar="آخر تحديث: نوفمبر 2026" data-en="Last Updated: November 2026">آخر تحديث: نوفمبر 2026</p>
 
     <div class="card">
-      <h2>مقدمة</h2>
-      <p>
-        موقع <strong>Banafsajcom.com</strong> هو واجهة عرض لتسهيل تصفح منتجات شي إن وتسريع عملية الاختيار على الزبون في المنطقة.
-      </p>
-      <p>
-        نحن لا نجمع بيانات شخصية، ولا نتتبع الزوار بشكل فردي، ولا نطلب إنشاء حسابات.
-      </p>
+      <h2 data-ar="مقدمة" data-en="Introduction">مقدمة</h2>
+      <p data-ar="موقع <strong>Banafsajcom.com</strong> هو واجهة عرض لتسهيل تصفح منتجات شي إن وتسريع عملية الاختيار على الزبون في المنطقة." 
+         data-en="<strong>Banafsajcom.com</strong> is a showcase interface designed to facilitate browsing Shein products and speed up the selection process for customers in the region.">موقع <strong>Banafsajcom.com</strong> هو واجهة عرض لتسهيل تصفح منتجات شي إن وتسريع عملية الاختيار على الزبون في المنطقة.</p>
+      <p data-ar="نحن لا نجمع بيانات شخصية، ولا نتتبع الزوار بشكل فردي، ولا نطلب إنشاء حسابات." 
+         data-en="We do not collect personal data, do not track visitors individually, and do not require account creation.">نحن لا نجمع بيانات شخصية، ولا نتتبع الزوار بشكل فردي، ولا نطلب إنشاء حسابات.</p>
     </div>
 
     <div class="card">
-      <h2>المعلومات والبيانات</h2>
+      <h2 data-ar="المعلومات والبيانات" data-en="Information and Data">المعلومات والبيانات</h2>
       <ul>
-        <li>الموقع <strong>لا يطلب</strong> أسماء أو أرقام هواتف أو عناوين بريد إلكتروني للتصفح.</li>
-        <li>الموقع <strong>غير قادر</strong> على تتبع معلومات شخصية عن الزائر.</li>
-        <li>لا يتم إنشاء حسابات مستخدمين ولا حفظ بيانات شخصية.</li>
+        <li data-ar="الموقع <strong>لا يطلب</strong> أسماء أو أرقام هواتف أو عناوين بريد إلكتروني للتصفح." 
+            data-en="The site <strong>does not require</strong> names, phone numbers, or email addresses for browsing.">الموقع <strong>لا يطلب</strong> أسماء أو أرقام هواتف أو عناوين بريد إلكتروني للتصفح.</li>
+        <li data-ar="الموقع <strong>غير قادر</strong> على تتبع معلومات شخصية عن الزائر." 
+            data-en="The site is <strong>unable</strong> to track personal information about the visitor.">الموقع <strong>غير قادر</strong> على تتبع معلومات شخصية عن الزائر.</li>
+        <li data-ar="لا يتم إنشاء حسابات مستخدمين ولا حفظ بيانات شخصية." 
+            data-en="No user accounts are created, and no personal data is stored.">لا يتم إنشاء حسابات مستخدمين ولا حفظ بيانات شخصية.</li>
       </ul>
     </div>
 
     <div class="card">
-      <h2>ملفات تعريف الارتباط (Cookies)</h2>
-      <p>
-        الموقع نفسه لا يعتمد على تتبع شخصي عبر الكوكيز.
-      </p>
-      <p>
-        عند الانتقال إلى موقع شي إن عبر الروابط، قد يستخدم موقع شي إن ملفات تعريف ارتباط خاصة به وفقاً لسياسته، وهذا خارج سيطرتنا.
-      </p>
+      <h2 data-ar="ملفات تعريف الارتباط (Cookies)" data-en="Cookies">ملفات تعريف الارتباط (Cookies)</h2>
+      <p data-ar="الموقع نفسه لا يعتمد على تتبع شخصي عبر الكوكيز." 
+         data-en="The site itself does not rely on personal tracking via cookies.">الموقع نفسه لا يعتمد على تتبع شخصي عبر الكوكيز.</p>
+      <p data-ar="عند الانتقال إلى موقع شي إن عبر الروابط، قد يستخدم موقع شي إن ملفات تعريف ارتباط خاصة به وفقاً لسياسته، وهذا خارج سيطرتنا." 
+         data-en="When redirected to Shein via links, Shein may use its own cookies according to its policy, which is beyond our control.">عند الانتقال إلى موقع شي إن عبر الروابط، قد يستخدم موقع شي إن ملفات تعريف ارتباط خاصة به وفقاً لسياسته، وهذا خارج سيطرتنا.</p>
     </div>
 
     <div class="card">
-      <h2>الروابط الخارجية</h2>
-      <p>
-        جميع روابط المنتجات تؤدي إلى موقع شي إن الرسمي.
-      </p>
+      <h2 data-ar="الروابط الخارجية" data-en="External Links">الروابط الخارجية</h2>
+      <p data-ar="جميع روابط المنتجات تؤدي إلى موقع شي إن الرسمي." 
+         data-en="All product links lead to the official Shein website.">جميع روابط المنتجات تؤدي إلى موقع شي إن الرسمي.</p>
       <ul>
-        <li>أي عملية شراء أو دفع أو شحن تتم بالكامل على موقع شي إن.</li>
-        <li>Banafsajcom.com لا يستلم أموالاً ولا يدير طلبات ولا يتعامل مع بيانات الدفع.</li>
-        <li>قد يكون الموقع جزءاً من برنامج الشركاء التابعين لشي إن، دون أي تكلفة إضافية على الزبون.</li>
+        <li data-ar="أي عملية شراء أو دفع أو شحن تتم بالكامل على موقع شي إن." 
+            data-en="Any purchase, payment, or shipping process is fully handled on Shein.">أي عملية شراء أو دفع أو شحن تتم بالكامل على موقع شي إن.</li>
+        <li data-ar="Banafsajcom.com لا يستلم أموالاً ولا يدير طلبات ولا يتعامل مع بيانات الدفع." 
+            data-en="Banafsajcom.com does not receive money, manage orders, or handle payment data.">Banafsajcom.com لا يستلم أموالاً ولا يدير طلبات ولا يتعامل مع بيانات الدفع.</li>
+        <li data-ar="قد يكون الموقع جزءاً من برنامج الشركاء التابعين لشي إن، دون أي تكلفة إضافية على الزبون." 
+            data-en="The site may be part of Shein's affiliate program, at no extra cost to the customer.">قد يكون الموقع جزءاً من برنامج الشركاء التابعين لشي إن، دون أي تكلفة إضافية على الزبون.</li>
       </ul>
-      <div class="note">
-        <strong>تنويه:</strong> نحن لسنا جزءاً من شركة شي إن، ولا نتحكم في بياناتها أو عملياتها.
-      </div>
+      <div class="note" data-ar="<strong>تنويه:</strong> نحن لسنا جزءاً من شركة شي إن، ولا نتحكم في بياناتها أو عملياتها." 
+           data-en="<strong>Note:</strong> We are not part of Shein, nor do we control its data or operations."><strong>تنويه:</strong> نحن لسنا جزءاً من شركة شي إن، ولا نتحكم في بياناتها أو عملياتها.</div>
     </div>
 
     <div class="card">
-      <h2>هدف الموقع</h2>
-      <p>
-        الهدف الوحيد من Banafsajcom.com هو:
-      </p>
+      <h2 data-ar="هدف الموقع" data-en="Site Purpose">هدف الموقع</h2>
+      <p data-ar="الهدف الوحيد من Banafsajcom.com هو:" data-en="The sole purpose of Banafsajcom.com is:">الهدف الوحيد من Banafsajcom.com هو:</p>
       <ul>
-        <li>عرض المنتجات بشكل مرتب وواضح.</li>
-        <li>تسهيل التصفح والمقارنة.</li>
-        <li>توفير وقت الزبون عبر واجهة بسيطة وسريعة.</li>
+        <li data-ar="عرض المنتجات بشكل مرتب وواضح." data-en="Display products in a neat and clear manner.">عرض المنتجات بشكل مرتب وواضح.</li>
+        <li data-ar="تسهيل التصفح والمقارنة." data-en="Facilitate browsing and comparison.">تسهيل التصفح والمقارنة.</li>
+        <li data-ar="توفير وقت الزبون عبر واجهة بسيطة وسريعة." data-en="Save customer time through a simple and fast interface.">توفير وقت الزبون عبر واجهة بسيطة وسريعة.</li>
       </ul>
     </div>
 
     <div class="card">
-      <h2>التعديلات</h2>
-      <p>
-        قد يتم تحديث هذه الصفحة عند الحاجة. سيتم نشر أي تعديل هنا مع تحديث التاريخ.
-      </p>
+      <h2 data-ar="التواصل" data-en="Contact">التواصل</h2>
+      <p data-ar="لأي استفسار يتعلق بهذه السياسة، يمكن التواصل معنا عبر البريد: combanafsaj@gmail.com" 
+         data-en="For any inquiries regarding this policy, you can contact us via email: combanafsaj@gmail.com">لأي استفسار يتعلق بهذه السياسة، يمكن التواصل معنا عبر البريد: combanafsaj@gmail.com</p>
     </div>
-
-    <div class="card">
-      <h2>التواصل</h2>
-      <p>
-        لأي استفسار يتعلق بهذه السياسة، يمكن التواصل عبر القنوات المتاحة على الموقع.
-      </p>
-    </div>
-
-    <footer>
-      <p>
-        <a href="index.html">الرئيسية</a> ·
-        <a href="about.html">من نحن</a>
-      </p>
-      <p style="margin-top:8px;">© 2026 Banafsajcom.com</p>
-    </footer>
   </div>
+
+  <script>
+    let currentLang = 'ar';
+    function toggleLang() {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      const isAr = currentLang === 'ar';
+      document.documentElement.setAttribute('lang', isAr ? 'ar' : 'en');
+      document.documentElement.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+      document.getElementById('langBtn').textContent = isAr ? 'English' : 'العربية';
+      document.querySelectorAll('[data-ar]').forEach(el => {
+        el.innerHTML = isAr ? el.dataset.ar : el.dataset.en;
+      });
+    }
+  </script>
 </body>
 </html>
