@@ -128,11 +128,15 @@ html[lang="ar"] .lang-en { display: none; }
   <a href="?cat=wedding" data-ar="زفاف" data-en="Wedding">زفاف</a>
   <a href="?cat=dresses" data-ar="فساتين" data-en="Dresses">فساتين</a>
   <a href="?cat=coats" data-ar="معاطف" data-en="Coats">معاطف</a>
-  <a href="?cat=loungewear" data-ar="بيجامات" data-en="Loungewear">بيجامات</a>
   <a href="?cat=shoes" data-ar="أحذية" data-en="Shoes">أحذية</a>
   <a href="?cat=bags" data-ar="حقائب" data-en="Bags">حقائب</a>
   <a href="?cat=jewelry" data-ar="مجوهرات" data-en="Jewelry">مجوهرات</a>
+  <a href="?cat=watches" data-ar="ساعات" data-en="Watches">ساعات</a>
   <a href="?cat=perfumes" data-ar="عطور" data-en="Perfumes">عطور</a>
+  <a href="?cat=loungewear" data-ar="بيجامات" data-en="Loungewear">بيجامات</a>
+  <a href="?cat=sets" data-ar="أطقم" data-en="Sets">أطقم</a>
+  <a href="?cat=tops" data-ar="بلوزات" data-en="Tops">بلوزات</a>
+  <a href="?cat=skirts" data-ar="تنانير" data-en="Skirts">تنانير</a>
 </nav>
   </div>
 </header>
@@ -702,25 +706,23 @@ function getCategory(p) {
 
   return 'other';
 }
-  const categoryOrder = ['wedding', 'dresses', 'coats', 'jackets', 'sets', 'tops', 'skirts', 'loungewear', 'shoes', 'bags', 'jewelry', 'watches', 'perfumes', 'other'];
+  const categoryOrder = ['wedding', 'dresses', 'coats', 'sets', 'tops', 'skirts', 'loungewear', 'shoes', 'bags', 'jewelry', 'watches', 'perfumes', 'other'];
   
   const categoryNames = {
-    wedding:   { ar: 'فساتين الزفاف',           en: 'Wedding Dresses' },
-    dresses:   { ar: 'فساتين سهرة ومناسبات',    en: 'Evening & Formal Dresses' },
-    coats:     { ar: 'المعاطف الشتوية',         en: 'Winter Coats' },
-    jackets:   { ar: 'الجاكيتات والبليزرات',    en: 'Jackets & Blazers' },
-    sets:      { ar: 'الأطقم والبدلات',         en: 'Sets & Suits' },
-    tops:      { ar: 'البلوزات والتوبات',       en: 'Tops & Sweaters' },
-    skirts:    { ar: 'التنانير',                en: 'Skirts' },
-    jumpsuits: { ar: 'الجمبسوت',                en: 'Jumpsuits' },
-    loungewear:{ ar: 'ملابس النوم والبيجامات',  en: 'Loungewear & Pajamas' },
-    shoes:     { ar: 'الأحذية والبوتات',        en: 'Shoes & Boots' },
-    bags:      { ar: 'الحقائب',                 en: 'Bags' },
-    jewelry:   { ar: 'المجوهرات',               en: 'Jewelry' },
-    watches:   { ar: 'الساعات',                 en: 'Watches' },
-    perfumes:  { ar: 'العطور',                 en: 'Perfumes' },
-    other:     { ar: 'منتجات أخرى',             en: 'Other Products' }
-  };
+  wedding:   { ar: '👰 فساتين الزفاف',           en: '👰 Wedding Dresses' },
+  dresses:   { ar: '👗 فساتين سهرة ومناسبات',    en: '👗 Evening & Formal Dresses' },
+  coats:     { ar: '🧥 المعاطف والجاكيتات',      en: '🧥 Coats & Jackets' },
+  sets:      { ar: '🛍️ الأطقم والبدلات',         en: '🛍️ Sets & Suits' },
+  tops:      { ar: '👚 البلوزات والتوبات',       en: '👚 Tops & Sweaters' },
+  skirts:    { ar: '👗 التنانير',                en: '👗 Skirts' },
+  loungewear:{ ar: '🩳 ملابس النوم والبيجامات',  en: '🩳 Loungewear & Pajamas' },
+  shoes:     { ar: '👠 الأحذية والبوتات',        en: '👠 Shoes & Boots' },
+  bags:      { ar: '👜 الحقائب',                 en: '👜 Bags' },
+  jewelry:   { ar: '💍 المجوهرات',               en: '💍 Jewelry' },
+  watches:   { ar: '⌚ الساعات',                 en: '⌚ Watches' },
+  perfumes:  { ar: '🌸 العطور',                  en: '🌸 Perfumes' },
+  other:     { ar: '✨ منتجات أخرى',             en: '✨ Other Products' }
+};
 
  function renderProducts() {
   const grid = document.getElementById('productsGrid');
