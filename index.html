@@ -767,7 +767,7 @@ function getCategory(p) {
     
     // إظهار عنوان القسم باللغة الحالية
     if(categoryNames[selectedCategory]) {
-      const title = currentLang === 'ar' ? categoryNames[selectedCategory].ar : categoryNames[selectedCategory].en;
+      const title = categoryNames[cat] ? (currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en) : cat;
       html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">${title}</h2>`;
     }
 
