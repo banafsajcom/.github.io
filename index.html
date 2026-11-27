@@ -724,13 +724,42 @@ function getCategory(p) {
   other:     { ar: '✨ منتجات أخرى',             en: '✨ Other Products' }
 };
 
- function renderProducts() {
-  const grid = document.getElementById('productsGrid');
-  const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+// 1. دالة مساعدة لإنشاء كارت المنتج (لتجنب تكرار الكود وإحداث أخطاء)
+function createProductCard(p) {
+  let finalUrl = p.url || p.affiliateUrl || '#';
+  if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
+    finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
+  }
+  
+  const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
+  const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
+  const v = Number(p.price) || 0;
+  const note = currentLang === 'ar' ? 'السعر الحقيقي على الموقع الرسمي' : 'Actual price on official site';
+  const priceText = v > 0 
+    ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi><small style="display:block;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>` 
+    : '';
 
-  // قراءة القسم المطلوب من الرابط (إذا وجد)
+  return `
+    <div class="product-card">
+      <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
+      <div class="product-body">
+        <div class="product-title">${displayName}</div>
+        <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
+          <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
+          <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add" style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">${buyBtnText}</a>
+        </div>
+      </div>
+    </div>`;
+}
+
+// 2. دالة العرض الرئيسية
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  if (!grid) return; // حماية إذا لم يجد الحاوية
+
+  const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
   const urlParams = new URLSearchParams(window.location.search);
-  const selectedCategory = urlParams.get('cat'); 
+  const selectedCategory = urlParams.get('cat');
 
   // فلترة المنتجات حسب البحث
   let filtered = myProducts.filter(p => {
@@ -739,14 +768,14 @@ function getCategory(p) {
     return nameAr.includes(search) || nameEn.includes(search);
   });
 
-  // إذا كان هناك قسم محدد في الرابط، نقوم بفلترة المنتجات لهذا القسم فقط
+  // فلترة حسب القسم المختار
   if (selectedCategory) {
     filtered = filtered.filter(p => getCategory(p) === selectedCategory);
   }
 
   if (filtered.length === 0) {
-    grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:2rem;">
-      ${currentLang === 'ar' ? 'لا توجد منتجات مطابقة' : 'No matching products found'}
+    grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:2rem;font-size:1.2rem;">
+      ${currentLang === 'ar' ? 'لا توجد منتجات مطابقة' : 'No products found'}
     </p>`;
     return;
   }
@@ -761,78 +790,38 @@ function getCategory(p) {
 
   let html = '';
 
-  // إذا كان هناك قسم محدد، نعرض المنتجات مع عنوان القسم
+  // عرض قسم محدد فقط
   if (selectedCategory) {
     const catItems = grouped[selectedCategory] || [];
     
-    // إظهار عنوان القسم باللغة الحالية
-    if(categoryNames[selectedCategory]) {
-      const title = categoryNames[cat] ? (currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en) : cat;
+    // إصلاح الخطأ: استخدام selectedCategory بدلاً من cat
+    const catNameObj = categoryNames[selectedCategory];
+    const title = catNameObj ? (currentLang === 'ar' ? catNameObj.ar : catNameObj.en) : selectedCategory;
+
+    if (catItems.length > 0) {
       html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">${title}</h2>`;
+      catItems.forEach(p => { html += createProductCard(p); });
     }
-
-    catItems.forEach(p => {
-       // كود كارت المنتج
-       let finalUrl = p.url || p.affiliateUrl || '#';
-       if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) {
-         finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING;
-       }
-       const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
-       const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
-       const v = Number(p.price) || 0;
-       const note = currentLang === 'ar' ? 'السعر الحقيقي على الموقع الرسمي' : 'Actual price on official site';
-       const priceText = v > 0 ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi><small style="display:block;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>` : '';
-
-       html += `
-        <div class="product-card">
-          <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
-          <div class="product-body">
-            <div class="product-title">${displayName}</div>
-            <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
-              <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
-              <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add" style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">${buyBtnText}</a>
-            </div>
-          </div>
-        </div>`;
-    });
   } else {
-    // إذا لم يتم تحديد قسم (الصفحة الرئيسية)، نعرض جميع الأقسام
+    // عرض جميع الأقسام (الصفحة الرئيسية)
     categoryOrder.forEach(cat => {
       if (!grouped[cat] || grouped[cat].length === 0) return;
-      const title = currentLang === 'ar' ? categoryNames[cat].ar : categoryNames[cat].en;
+      
+      const catNameObj = categoryNames[cat];
+      const title = catNameObj ? (currentLang === 'ar' ? catNameObj.ar : catNameObj.en) : cat;
+
       html += `<h2 style="grid-column:1/-1;color:#4A1C55;font-size:1.45rem;font-weight:800;margin:2.2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #E8DFF0;">${title}</h2>`;
-
-      grouped[cat].forEach(p => {
-         // كود كارت المنتج (نفسه الموجود بالأعلى)
-         let finalUrl = p.url || p.affiliateUrl || '#';
-         if (finalUrl !== '#' && !finalUrl.includes(AFFILIATE_TRACKING)) { finalUrl += (finalUrl.includes('?') ? '&' : '?') + AFFILIATE_TRACKING; }
-         const displayName = currentLang === 'ar' ? (p.name_ar || p.name_en) : (p.name_en || p.name_ar);
-         const buyBtnText  = currentLang === 'ar' ? 'اشترِ من Shein' : 'Buy on Shein';
-         const v = Number(p.price) || 0;
-         const note = currentLang === 'ar' ? 'السعر الحقيقي على الموقع الرسمي' : 'Actual price on official site';
-         const priceText = v > 0 ? `≈ <bdi dir="ltr">$${v.toFixed(2)}</bdi><small style="display:block;font-size:.78rem;color:#4A3A52;margin-top:2px;">${note}</small>` : '';
-
-         html += `
-          <div class="product-card">
-            <img class="product-img" src="${p.image}" alt="${displayName}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/250x250?text=Banafsaj'">
-            <div class="product-body">
-              <div class="product-title">${displayName}</div>
-              <div class="product-footer" style="flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;">
-                <div class="product-price" style="text-align:center;font-size:1.1rem;">${priceText}</div>
-                <a href="${finalUrl}" target="_blank" rel="sponsored noopener" class="btn-add" style="text-decoration:none;text-align:center;width:100%;display:block;box-sizing:border-box;padding:0.6rem;border-radius:50px;font-weight:bold;">${buyBtnText}</a>
-              </div>
-            </div>
-          </div>`;
-      });
+      grouped[cat].forEach(p => { html += createProductCard(p); });
     });
   }
   grid.innerHTML = html;
 }
- function toggleLang() {
+
+// 3. دالة تبديل اللغة
+function toggleLang() {
   currentLang = currentLang === 'ar' ? 'en' : 'ar';
   const isAr = currentLang === 'ar';
   
-  // 👇 هذا السطر الجديد يحفظ اللغة في ذاكرة المتصفح 👇
   localStorage.setItem('banafsaj_lang', currentLang); 
   
   document.documentElement.setAttribute('lang', isAr ? 'ar' : 'en');
@@ -847,7 +836,7 @@ function getCategory(p) {
   renderProducts();
 }
 
-// 👇 هذا هو الكود الجديد الذي يقرأ اللغة المحفوظة عند تحميل الصفحة 👇
+// 4. التشغيل الأولي
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem('banafsaj_lang');
   
@@ -866,6 +855,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // عرض المنتجات بعد التأكد من اللغة
   renderProducts();
+  
+  // ربط البحث بالحدث
+  document.getElementById('searchInput').addEventListener('input', renderProducts);
 });
 
   document.addEventListener('DOMContentLoaded', renderProducts);
