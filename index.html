@@ -564,81 +564,75 @@ const enRules = [
 ];
 
 function getCategory(p) {
-  // 1. تعريف النصوص للبحث
   const ar = (p.name_ar || '').toLowerCase();
   const en = (p.name_en || '').toLowerCase();
   const text = ar + ' ' + en;
 
-  // 2. التجاوزات اليدوية (إذا وجدت)
   if (typeof categoryOverrides !== 'undefined' && categoryOverrides[p.id]) {
     return categoryOverrides[p.id];
   }
 
-  // 3. التصنيفات الدقيقة (بالترتيب)
-  
-  // عطور
-  if (text.includes('عطر') || text.includes('عطور') || text.includes('برفان') || text.includes('مسك') || text.includes('بخور') || text.includes('perfume') || text.includes('fragrance') || text.includes('parfum') || text.includes('cologne') || text.includes('mist') || text.includes('eau de')) {
+  // 1. العطور (أولوية قصوى)
+  if (text.includes('عطر') || text.includes('برفان') || text.includes('بخور') || en.includes('perfume') || en.includes('fragrance') || en.includes('parfum') || en.includes('cologne') || text.includes('eau de')) {
     return 'perfumes';
   }
 
-  // فساتين الزفاف
-  if (ar.includes('فستان زفاف') || ar.includes('فساتين زفاف') || en.includes('wedding dress') || en.includes('bridal')) {
-    return 'wedding';
-  }
-
-  // أطقم النوم والبيجامات
-  if (ar.includes('بيجامة') || ar.includes('طقم نوم') || en.includes('pajama') || en.includes('loungewear') || en.includes('sleepwear')) {
+  // 2. ملابس النوم والبيجامات (قبل الزفاف لأن هناك بيجامة عرائسي)
+  if (text.includes('بيجامة') || text.includes('طقم نوم') || text.includes('لانجيري') || en.includes('pajama') || en.includes('loungewear') || en.includes('sleepwear') || en.includes('nightgown')) {
     return 'loungewear';
   }
-  // الروب (بشرط ألا يكون فستان سهرة)
-  if (ar.includes('روب') || en.includes('robe')) {
-    if (!ar.includes('فستان') && !en.includes('dress')) return 'loungewear';
-  }
 
-  // أحذية
-  if (ar.includes('حذاء') || ar.includes('بوت') || ar.includes('صندل') || ar.includes('كعب') || en.includes('shoe') || en.includes('boot') || en.includes('heel') || en.includes('sandal')) {
+  // 3. الأحذية (قبل الزفاف لأن هناك صندل زفاف)
+  if (text.includes('حذاء') || text.includes('بوت') || text.includes('صندل') || text.includes('كعب') || en.includes('shoe') || en.includes('boot') || en.includes('heel') || en.includes('sandal') || en.includes('sneaker')) {
     return 'shoes';
   }
 
-  // حقائب
-  if (ar.includes('حقيبة') || ar.includes('شنطة') || en.includes('bag') || en.includes('clutch') || en.includes('tote')) {
+  // 4. الحقائب (قبل الزفاف)
+  if (text.includes('حقيبة') || text.includes('شنطة') || en.includes('bag') || en.includes('clutch') || en.includes('tote') || en.includes('backpack')) {
     return 'bags';
   }
 
-  // معاطف وجاكيتات
-  if (ar.includes('معطف') || ar.includes('جاكيت') || ar.includes('بليزر') || ar.includes('فرو') || en.includes('coat') || en.includes('jacket') || en.includes('blazer') || en.includes('fur')) {
-    return 'coats';
+  // 5. الأطقم (نفحصها قبل المجوهرات لالتقاط "طقم تريكو مع أقراط")
+  if (text.includes('طقم') || en.includes('set') || en.includes('2pcs') || en.includes('2 pieces') || en.includes('two piece')) {
+    if (text.includes('مجوهرات') || en.includes('jewelry')) return 'jewelry'; // إذا كان طقم مجوهرات
+    if (text.includes('فستان') || en.includes('dress')) return 'dresses';    // إذا كان طقم فستان
+    return 'sets'; // أي طقم آخر (تريكو، بلوزة، إلخ)
   }
 
-  // مجوهرات وساعات
-  if (ar.includes('مجوهرات') || ar.includes('خاتم') || ar.includes('عقد') || ar.includes('قلادة') || ar.includes('أقراط') || en.includes('jewelry') || en.includes('ring') || en.includes('necklace') || en.includes('earring') || en.includes('bracelet')) {
+  // 6. المجوهرات والساعات (قبل الزفاف لالتقاط "طقم مجوهرات عروس")
+  // نستخدم /\bring\b/ للبحث عن كلمة ring ككلمة مستقلة لكي لا نلتقط Spring أو Fringe
+  if (text.includes('مجوهرات') || text.includes('خاتم') || text.includes('عقد') || text.includes('قلادة') || text.includes('أقراط') || text.includes('اقراط') || en.includes('jewelry') || en.includes('necklace') || en.includes('bracelet') || en.includes('earring') || /\bring\b/.test(en)) {
     return 'jewelry';
   }
-  if (ar.includes('ساعة') || en.includes('watch')) {
+  if (text.includes('ساعة') || en.includes('watch')) {
     return 'watches';
   }
 
-  // فساتين (عامة)
-  if (ar.includes('فستان') || en.includes('dress') || en.includes('gown')) {
+  // 7. فساتين الزفاف (يجب أن يكون فستان + زفاف/عروس)
+  if ((text.includes('فستان') || en.includes('dress') || en.includes('gown')) && (text.includes('زفاف') || en.includes('wedding') || en.includes('bridal'))) {
+    return 'wedding';
+  }
+
+  // 8. المعاطف والجاكيتات
+  if (text.includes('معطف') || text.includes('جاكيت') || text.includes('بليزر') || text.includes('فرو') || en.includes('coat') || en.includes('jacket') || en.includes('blazer') || en.includes('fur')) {
+    return 'coats';
+  }
+
+  // 9. الفساتين العادية
+  if (text.includes('فستان') || en.includes('dress') || en.includes('gown')) {
     return 'dresses';
   }
 
-  // أطقم
-  if (ar.includes('طقم') || en.includes('set') || en.includes('suit') || en.includes('2pcs') || en.includes('pieces')) {
-    return 'sets';
-  }
-
-  // تنانير
-  if (ar.includes('تنورة') || en.includes('skirt')) {
+  // 10. التنانير
+  if (text.includes('تنورة') || en.includes('skirt')) {
     return 'skirts';
   }
 
-  // توبات وبلوزات
-  if (ar.includes('بلوزة') || ar.includes('قميص') || ar.includes('سويتر') || ar.includes('توب') || en.includes('top') || en.includes('blouse') || en.includes('shirt') || en.includes('sweater')) {
+  // 11. التوبات والبلوزات
+  if (text.includes('بلوزة') || text.includes('قميص') || text.includes('سويتر') || text.includes('توب') || en.includes('top') || en.includes('blouse') || en.includes('shirt') || en.includes('sweater')) {
     return 'tops';
   }
-  
-  // أي شيء آخر
+
   return 'other';
 }
   const categoryOrder = ['wedding', 'dresses', 'coats', 'jackets', 'sets', 'tops', 'skirts', 'jumpsuits', 'shoes', 'bags', 'jewelry', 'watches', 'perfumes', 'other'];
