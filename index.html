@@ -568,6 +568,8 @@ function getCategory(p) {
 
   const ar = (p.name_ar || '').trim();
   const en = (p.name_en || '').toLowerCase();
+  // تصنيف العطور
+if (text.includes('عطر') || text.includes('عطور') || text.includes('برفان') || text.includes('مسك') || text.includes('بخور') || text.includes('perfume') || text.includes('fragrance') || text.includes('parfum') || text.includes('cologne') || text.includes('mist')) return 'perfumes';
 
   // فساتين الزفاف فقط (وليس صندل زفاف أو مجوهرات عروس)
   if (ar.includes('فستان زفاف') || ar.includes('فساتين زفاف')) return 'wedding';
