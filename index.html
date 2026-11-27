@@ -128,6 +128,7 @@ html[lang="ar"] .lang-en { display: none; }
   <a href="?cat=wedding" data-ar="زفاف" data-en="Wedding">زفاف</a>
   <a href="?cat=dresses" data-ar="فساتين" data-en="Dresses">فساتين</a>
   <a href="?cat=coats" data-ar="معاطف" data-en="Coats">معاطف</a>
+  <a href="?cat=loungewear" data-ar="بيجامات" data-en="Loungewear">بيجامات</a>
   <a href="?cat=shoes" data-ar="أحذية" data-en="Shoes">أحذية</a>
   <a href="?cat=bags" data-ar="حقائب" data-en="Bags">حقائب</a>
   <a href="?cat=jewelry" data-ar="مجوهرات" data-en="Jewelry">مجوهرات</a>
@@ -710,7 +711,7 @@ function getCategory(p) {
 
   return 'other';
 }
-  const categoryOrder = ['wedding', 'dresses', 'coats', 'jackets', 'sets', 'tops', 'skirts', 'jumpsuits', 'shoes', 'bags', 'jewelry', 'watches', 'perfumes', 'other'];
+  const categoryOrder = ['wedding', 'dresses', 'coats', 'jackets', 'sets', 'tops', 'skirts', 'loungewear', 'shoes', 'bags', 'jewelry', 'watches', 'perfumes', 'other'];
   
   const categoryNames = {
     wedding:   { ar: 'فساتين الزفاف',           en: 'Wedding Dresses' },
@@ -721,6 +722,7 @@ function getCategory(p) {
     tops:      { ar: 'البلوزات والتوبات',       en: 'Tops & Sweaters' },
     skirts:    { ar: 'التنانير',                en: 'Skirts' },
     jumpsuits: { ar: 'الجمبسوت',                en: 'Jumpsuits' },
+    loungewear:{ ar: 'ملابس النوم والبيجامات',  en: 'Loungewear & Pajamas' },
     shoes:     { ar: 'الأحذية والبوتات',        en: 'Shoes & Boots' },
     bags:      { ar: 'الحقائب',                 en: 'Bags' },
     jewelry:   { ar: 'المجوهرات',               en: 'Jewelry' },
