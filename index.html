@@ -663,12 +663,22 @@ function getCategory(p) {
     return 'bags';
   }
 
-  // 5. الأطقم (نفحصها قبل المجوهرات لالتقاط "طقم تريكو مع أقراط")
-  if (text.includes('طقم') || en.includes('set') || en.includes('2pcs') || en.includes('2 pieces') || en.includes('two piece')) {
-    if (text.includes('مجوهرات') || en.includes('jewelry')) return 'jewelry'; // إذا كان طقم مجوهرات
-    if (text.includes('فستان') || en.includes('dress')) return 'dresses';    // إذا كان طقم فستان
-    return 'sets'; // أي طقم آخر (تريكو، بلوزة، إلخ)
+  // 5. الأطقم (تم التعديل لالتقاط أطقم المجوهرات)
+if (text.includes('طقم') || en.includes('set') || en.includes('2pcs') || en.includes('2 pieces') || en.includes('two piece')) {
+  
+  // إذا كان الطقم يحتوي على كلمات تدل على المجوهرات، فهو مجوهرات وليس ملابس
+  if (text.includes('مجوهرات') || text.includes('خاتم') || text.includes('خواتم') || text.includes('عقد') || text.includes('قلادة') || text.includes('سلسلة') || text.includes('سوار') || en.includes('jewelry') || en.includes('ring') || en.includes('necklace') || en.includes('bracelet')) {
+    return 'jewelry';
   }
+  
+  // إذا كان الطقم يحتوي على فستان، فهو فساتين
+  if (text.includes('فستان') || en.includes('dress')) {
+    return 'dresses';
+  }
+  
+  // أي طقم آخر (مثل طقم تريكو، بلوزة، إلخ) يذهب للأطقم
+  return 'sets';
+}
 
   // 6. المجوهرات والساعات (قبل الزفاف لالتقاط "طقم مجوهرات عروس")
   // نستخدم /\bring\b/ للبحث عن كلمة ring ككلمة مستقلة لكي لا نلتقط Spring أو Fringe
