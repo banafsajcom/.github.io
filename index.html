@@ -640,6 +640,16 @@ const enRules = [
 ];
 
 function getCategory(p) {
+  // 👇 التجاوزات اليدوية لضمان ظهور أطقم النوم في مكانها 👇
+  const categoryOverrides = {
+    900000452: 'loungewear',
+    900000453: 'loungewear',
+    900000454: 'loungewear',
+    900000455: 'loungewear',
+    900000456: 'loungewear'
+  };
+  if (categoryOverrides[p.id]) return categoryOverrides[p.id];
+  // 👆 نهاية التجاوزات 👆
   const ar = (p.name_ar || '').toLowerCase();
   const en = (p.name_en || '').toLowerCase();
   const text = ar + ' ' + en;
